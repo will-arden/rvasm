@@ -19,14 +19,12 @@ class Processor():
     # Method to process the next line of the assembly file
     def ProcessLine(self, line):
 
-        # Strip the newline character from the line
-        line = line.rstrip()
-
-        # Ignore comments
-        line = line.split("#")[0]
+        line = line.rstrip()                # Strip the newline character from the line
+        line = line.split("#")[0]           # Ignore comments
+        line = line.strip()                 # Remove whitespace
 
         # Ignore empty lines
-        if (not line.strip()):
+        if (not line):
             return
         
         # Parse labels

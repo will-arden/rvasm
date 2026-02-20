@@ -1,4 +1,5 @@
 from exceptions import ASMDeveloperError
+from exceptions import ASMIncludeError
 
 class Library():
 
@@ -32,9 +33,17 @@ class Library():
     # Method to compile a working library from the include list
     def _CompileWorkingLibrary(self):
         for i in self.include:
-            for key, value in self.ISAs.items():
-                if (i == key):
-                    self.working_lib.append(value)
+            for isa_name, isa_data in self.ISAs.items():
+                if (i == isa_name):
+                    self.working_lib.append(isa_data)
+
+        # Check for duplicate instructions added to the working library
+        seen_instructions = []
+        for include in self.working_lib:
+            for entry in include:
+                if (entry[0] in seen_instructions):
+                    raise ASMIncludeError("Found multiple definitions for the same instruction when compiling the working library.", entry[0])
+                seen_instructions.append(entry[0])
 
     # Method to update the working library
     def UpdateWorkingLibrary(self, include: list[str]):

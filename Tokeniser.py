@@ -1,3 +1,5 @@
+import re
+
 from Library import Library
 from exceptions import ASMSyntaxError
 
@@ -9,10 +11,22 @@ class Tokeniser():
     def Tokenise(self, line: str):
         library_data = None
         format_string = None
+        instr = None
+
+        # Split the instruction into parts
+        parts = re.split(r"[,()\s]+", line)                 # Split for whitespace, commas and brackets
+        parts = [p.strip() for p in parts if p.strip()]     # Prune separators and useless parts
+        instr = parts[0]                                    # Identify the instruction keyword
+
+        # print(f"Parts = {parts}")
 
         # Firstly, retrieve the data about the instruction from the library
-        for entry in self.library.GetWorkingLibrary():
-            pass
+        for include in self.library.GetWorkingLibrary():
+            for entry in include:
+                if (instr == entry[0]):
+                    library_data = entry
+
+        print(f"Library data found: {library_data}")
 
     def _ObtainFormatString(self, line: str, entry: str):
         return True
