@@ -1,7 +1,7 @@
 import re
 
-from Library import Library
-from exceptions import ASMSyntaxError
+from classes.Library import Library
+from util.exceptions import ASMSyntaxError
 
 class Tokeniser():
 
@@ -26,7 +26,11 @@ class Tokeniser():
                 if (instr == entry[0]):
                     library_data = entry
 
-        print(f"Library data found: {library_data}")
+        # Retrieve the format string from the library
+
+        # Extract the fields from the instruction
+
+        # Return the tokenised instruction
 
     def _ObtainFormatString(self, line: str, entry: str):
         return True

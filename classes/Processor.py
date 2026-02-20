@@ -1,5 +1,5 @@
-from Tokeniser import Tokeniser
-from exceptions import ASMSyntaxError
+from classes.Tokeniser import Tokeniser
+from util.exceptions import ASMSyntaxError
 
 class Processor():
 
@@ -10,6 +10,8 @@ class Processor():
         self.index = 0                          # Program index (program counter / 4)
         self.line_counter = 0                   # Count of the number of lines processed
         self.tokeniser = Tokeniser(library)     # Object responsible for tokenising instructions
+
+        # TODO: I need a class for crunching the tokenised instructions into machine code
 
     # Method to reset the Processor, ready for another file to assemble
     def Reset(self):

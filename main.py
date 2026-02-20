@@ -1,4 +1,4 @@
-from RVAsm import RVAsm
+from classes.RVAsm import RVAsm
 
 rvasm = RVAsm()
 

@@ -2,9 +2,9 @@
 from typing import TextIO
 
 # Local imports
-from Library import Library
-from Processor import Processor
-from exceptions import ASMIncludeError
+from classes.Library import Library
+from classes.Processor import Processor
+from util.exceptions import ASMIncludeError
 
 class RVAsm():
 
