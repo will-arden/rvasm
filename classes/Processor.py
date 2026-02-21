@@ -38,8 +38,10 @@ class Processor():
 
             label = {"name": label_parts[0], "index": self.index}
             self.labels.append(label)
+            return
 
         # Parse instructions
+        print(f"line is {line}")
         instr = self.tokeniser.Tokenise(line)
         self.instructions.append(instr)
 

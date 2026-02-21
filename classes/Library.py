@@ -9,7 +9,13 @@ class Library():
 
     # List of expected instruction formats
     formats = {
-        "F0": "instr rd, rs1, rs2"
+        "F0": "instr rd, rs1, rs2",
+        "F1": "instr rd, imm",
+        "F2": "instr rs1, rs2, imm",
+        "F3": "instr rd, rs1, imm",
+        "F4": "instr rd, imm(rs1)",
+        "F5": "instr rs2, imm(rs1)",
+        "F6": "instr"
     }
 
     # Empty ISAs will be populated with tuples on class initialisation
@@ -20,8 +26,48 @@ class Library():
 
     def __init__(self):
 
-        # Format: (instr: str, format: str, opcode: str, funct3: str, funct7: str)
-        self._AddToISA("RV32I", ("addi", "F0", "0010011", "000", None))
+        # Format: (instr: str, format: str, type: str, opcode: str, funct3: str, funct7: str)
+
+        self._AddToISA("RV32I", ("lui", "F1", "U", "0110111", None, None))
+        self._AddToISA("RV32I", ("auipc", "F1", "U", "0010111", None, None))
+        self._AddToISA("RV32I", ("jal", "F1", "J", "1101111", None, None))
+        self._AddToISA("RV32I", ("beq", "F2", "B", "1100011", "000", None))
+        self._AddToISA("RV32I", ("bne", "F2", "B", "1100011", "001", None))
+        self._AddToISA("RV32I", ("blt", "F2", "B", "1100011", "100", None))
+        self._AddToISA("RV32I", ("bge", "F2", "B", "1100011", "101", None))
+        self._AddToISA("RV32I", ("bltu", "F2", "B", "1100011", "110", None))
+        self._AddToISA("RV32I", ("bgeu", "F2", "B", "1100011", "111", None))
+        self._AddToISA("RV32I", ("jalr", "F3", "I", "1100111", "000", None))
+        self._AddToISA("RV32I", ("lb", "F4", "I", "0000011", "000", None))
+        self._AddToISA("RV32I", ("lh", "F4", "I", "0000011", "001", None))
+        self._AddToISA("RV32I", ("lw", "F4", "I", "0000011", "010", None))
+        self._AddToISA("RV32I", ("lbu", "F4", "I", "0000011", "100", None))
+        self._AddToISA("RV32I", ("lhu", "F4", "I", "0000011", "101", None))
+        self._AddToISA("RV32I", ("addi", "F3", "I", "0010011", "000", None))
+        self._AddToISA("RV32I", ("slti", "F3", "I", "0010011", "010", None))
+        self._AddToISA("RV32I", ("sltiu", "F3", "I", "0010011", "011", None))
+        self._AddToISA("RV32I", ("xori", "F3", "I", "0010011", "100", None))
+        self._AddToISA("RV32I", ("ori", "F3", "I", "0010011", "110", None))
+        self._AddToISA("RV32I", ("andi", "F3", "I", "0010011", "111", None))
+        self._AddToISA("RV32I", ("sb", "F5", "S", "0100011", "000", None))
+        self._AddToISA("RV32I", ("sh", "F5", "S", "0100011", "001", None))
+        self._AddToISA("RV32I", ("sw", "F5", "S", "0100011", "010", None))
+        self._AddToISA("RV32I", ("slli", "F3", "I", "0010011", "001", "0000000"))
+        self._AddToISA("RV32I", ("srli", "F3", "I", "0010011", "101", "0000000"))
+        self._AddToISA("RV32I", ("srai", "F3", "I", "0010011", "101", "0100000"))
+        self._AddToISA("RV32I", ("add", "F0", "R", "0110011", "000", "0000000"))
+        self._AddToISA("RV32I", ("sub", "F0", "R", "0110011", "000", "0100000"))
+        self._AddToISA("RV32I", ("sll", "F0", "R", "0110011", "001", "0000000"))
+        self._AddToISA("RV32I", ("slt", "F0", "R", "0110011", "010", "0000000"))
+        self._AddToISA("RV32I", ("sltu", "F0", "R", "0110011", "011", "0000000"))
+        self._AddToISA("RV32I", ("xor", "F0", "R", "0110011", "100", "0000000"))
+        self._AddToISA("RV32I", ("srl", "F0", "R", "0110011", "101", "0000000"))
+        self._AddToISA("RV32I", ("sra", "F0", "R", "0110011", "101", "0100000"))
+        self._AddToISA("RV32I", ("or", "F0", "R", "0110011", "110", "0000000"))
+        self._AddToISA("RV32I", ("and", "F0", "R", "0110011", "111", "0000000"))
+        self._AddToISA("RV32I", ("fence", "F6", "", "0001111", "000", None))
+        self._AddToISA("RV32I", ("ecall", "F6", "", "1110011", "000", None))
+        self._AddToISA("RV32I", ("ebreak", "F6", "", "1110011", "000", None))
 
 
     # Method to make adding new instructions easy and readable (only intended for use within this class)

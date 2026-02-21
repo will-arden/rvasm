@@ -2,6 +2,7 @@ import re
 
 from classes.Library import Library
 from util.exceptions import ASMSyntaxError
+from util.exceptions import ASMIncludeError
 
 class Tokeniser():
 
@@ -26,7 +27,12 @@ class Tokeniser():
                 if (instr == entry[0]):
                     library_data = entry
 
+        # Throw an error if the instruction can't be found in the working library
+        if (library_data == None):
+            raise ASMIncludeError("Unknown instruction which cannot be found in the working library.", instr)
+
         # Retrieve the format string from the library
+
 
         # Extract the fields from the instruction
 
