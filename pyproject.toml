@@ -1,6 +1,6 @@
 [project]
 name = "rvasm"
-version = "0.0.1"
+version = "0.0.1a1"
 description = "A simple RISC-V assembler written in Python"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -19,3 +19,6 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[project.scripts]
+rvasm = "rvasm.rvasm:main"

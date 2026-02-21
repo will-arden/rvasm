@@ -6,6 +6,19 @@ from .classes.library import Library
 from .classes.processor import Processor
 from .util.exceptions import ASMIncludeError
 
+def main():
+    import sys
+
+    if (len(sys.argv) < 2):
+        print(f"Usage: rvasm <input_file> <optional|output_file> <optional|hex/binary>")
+        return
+    
+    input_file = sys.argv[1]
+
+    rvasm = RVAsm()
+    with open(input_file, "r", encoding="utf-8") as f:
+        rvasm.Assemble(f)
+
 class RVAsm():
 
     def __init__(self):
