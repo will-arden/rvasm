@@ -41,12 +41,13 @@ class Processor():
             return
 
         # Parse instructions
-        print(f"line is {line}")
         instr = self.tokeniser.Tokenise(line)
+        print(f"Got tokenised instruction: {instr}")
+        self.index += 1
         self.instructions.append(instr)
 
-    # Method which iterates over the instructions, replacing labels with actual addresses
-    def ResolveLabels(self):
+    # Method which replaces labels with actual addresses, converts immediates to their proper value, etc.
+    def MagicWand(self):
         pass
 
     # Method to generate the final machine code

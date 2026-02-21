@@ -27,7 +27,6 @@ class Library():
     def __init__(self):
 
         # Format: (instr: str, format: str, type: str, opcode: str, funct3: str, funct7: str)
-
         self._AddToISA("RV32I", ("lui", "F1", "U", "0110111", None, None))
         self._AddToISA("RV32I", ("auipc", "F1", "U", "0010111", None, None))
         self._AddToISA("RV32I", ("jal", "F1", "J", "1101111", None, None))
