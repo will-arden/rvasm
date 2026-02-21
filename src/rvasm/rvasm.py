@@ -10,7 +10,8 @@ def main():
     import sys
 
     if (len(sys.argv) < 2):
-        print(f"Usage: rvasm <input_file> <optional|output_file> <optional|hex/binary>")
+        print(f"Usage: rvasm <input_file>")
+        # print(f"Usage: rvasm <input_file> <optional|output_file> <optional|hex/binary>")
         return
     
     input_file = sys.argv[1]
