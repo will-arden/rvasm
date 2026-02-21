@@ -4,6 +4,10 @@ class ASMSyntaxError(Exception):
     def __init__(self, message: str, line_num: int, line: str):
         super().__init__(message, line_num, line)
 
+class ASMLogicError(Exception):
+    def __init__(self, message: str, line: str):
+        super().__init__(message, line)
+
 class ASMIncludeError(Exception):
     def __init__(self, message: str, include_name: str):
         super().__init__(message, include_name)

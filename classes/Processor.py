@@ -1,5 +1,6 @@
 from classes.Tokeniser import Tokeniser
 from util.exceptions import ASMSyntaxError
+from util.exceptions import ASMLogicError
 
 class Processor():
 
@@ -42,13 +43,38 @@ class Processor():
 
         # Parse instructions
         instr = self.tokeniser.Tokenise(line)
-        print(f"Got tokenised instruction: {instr}")
         self.index += 1
         self.instructions.append(instr)
 
     # Method which replaces labels with actual addresses, converts immediates to their proper value, etc.
     def MagicWand(self):
-        pass
+        for row in self.instructions:
+
+            # Look-up the library data for this instruction
+            row_data = self.library.WorkingLibraryLookUp(row["instr"])
+
+            for key, value in row.items():
+
+                # Ensure every field is lower-case
+                row[key] = row[key].lower()
+
+                # No need to check instruction keyword
+                if (key == "instr"):
+                    continue
+
+                # Ensure any x's are removed from register fields, then convert to an integer between 0-31
+                if (key in ("rd", "rs1", "rs2")):
+                    row[key] = row[key].replace("x", "")
+                    row[key] = int(row[key])
+                    if (row[key] < 0 or row[key] > 31):
+                        raise ASMLogicError("Register outside of range 0-31.", str(row[key]))
+                    
+                # Resolve labels
+                if ((key == "imm") and (not row[key].isdigit())):
+                    for lbl in self.labels:
+                        if (lbl["name"] == row[key]):
+                            row[key] = lbl["index"] * int(row_data[2] / 8)
+
 
     # Method to generate the final machine code
     def GenerateMachineCode(self):

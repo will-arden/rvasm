@@ -42,7 +42,7 @@ class RVAsm():
             self.processor.ProcessLine(line)
 
         # Second pass to resolve labels
-        self.processor.ResolveLabels()
+        self.processor.MagicWand()
 
         # Create the machine code
         self.processor.GenerateMachineCode()
