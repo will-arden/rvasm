@@ -1,3 +1,14 @@
-*.pyc
 *.asm
 *.dat
+__pycache__/
+*.py[cod]
+build/
+dist/
+*.egg-info/
+.eggs/
+pip-log.txt
+pip-delete-this-directory.txt
+venv/
+.env/
+.vscode/
+.idea/

@@ -1,5 +1,5 @@
-from util.exceptions import ASMDeveloperError
-from util.exceptions import ASMIncludeError
+from rvasm.util.exceptions import ASMDeveloperError
+from rvasm.util.exceptions import ASMIncludeError
 
 class Library():
 

@@ -1,9 +1,9 @@
 import re
 
-from classes.Library import Library
-from util.exceptions import ASMSyntaxError
-from util.exceptions import ASMIncludeError
-from util.exceptions import ASMDeveloperError
+from rvasm.classes.library import Library
+from rvasm.util.exceptions import ASMSyntaxError
+from rvasm.util.exceptions import ASMIncludeError
+from rvasm.util.exceptions import ASMDeveloperError
 
 class Tokeniser():
 

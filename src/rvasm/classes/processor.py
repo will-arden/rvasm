@@ -1,7 +1,7 @@
-from classes.Tokeniser import Tokeniser
-from util.exceptions import ASMSyntaxError
-from util.exceptions import ASMLogicError
-from util.exceptions import ASMDeveloperError
+from rvasm.classes.tokeniser import Tokeniser
+from rvasm.util.exceptions import ASMSyntaxError
+from rvasm.util.exceptions import ASMLogicError
+from rvasm.util.exceptions import ASMDeveloperError
 
 class Processor():
 
