@@ -1,24 +1,37 @@
-# Packages
+import argparse
 from typing import TextIO
 
-# Local imports
 from .classes.library import Library
 from .classes.processor import Processor
 from .util.exceptions import ASMIncludeError
 
 def main():
-    import sys
 
-    if (len(sys.argv) < 2):
-        print(f"Usage: rvasm <input_file>")
-        # print(f"Usage: rvasm <input_file> <optional|output_file> <optional|hex/binary>")
-        return
-    
-    input_file = sys.argv[1]
+    # Handle arguments
+    parser = argparse.ArgumentParser(description="A RISC-V assembler.")
+    parser.add_argument("input", help="input file path")
+    parser.add_argument("-o", "--output", help="output file path")
+    parser.add_argument("-f", "--format", help="output format (binary/hex)")
+    args = parser.parse_args()
+
+    # Optional arguments
+
 
     rvasm = RVAsm()
-    with open(input_file, "r", encoding="utf-8") as f:
-        rvasm.Assemble(f)
+    with open(args.input, "r", encoding="utf-8") as f:
+
+        # Placeholder variables to pass to rvasm object
+        OUTPUT = None
+        OUTPUT_FORMAT = None
+
+        # Overwrite placeholders with any arguments (if present)
+        if (args.output):
+            OUTPUT = args.output
+        if (args.format):
+            OUTPUT_FORMAT = args.format
+        
+        # Go!
+        rvasm.Assemble(f, output=OUTPUT, output_format=OUTPUT_FORMAT)
 
 class RVAsm():
 
@@ -43,7 +56,13 @@ class RVAsm():
         self._UpdateWorkingLibrary()
 
     # Method to assemble a .asm file, producing a .dat output
-    def Assemble(self, file: TextIO, output="out.dat", output_format="hex"):
+    def Assemble(self, file: TextIO, output=None, output_format=None):
+
+        # Internally set default arguments (easier for argparse)
+        if (not output):
+            output = "out.dat"
+        if (not output_format):
+            output_format = "hex"
 
         self.processor.Reset()                              # Reset the processor (but maintain includes)
         
@@ -55,7 +74,6 @@ class RVAsm():
         self._WriteOutput(                                  # Output the file to the current directory
             filename=output,
             output_format=output_format)
-
 
     # Method to update the working library following changes to the include list
     def _UpdateWorkingLibrary(self):
