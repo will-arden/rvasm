@@ -44,7 +44,7 @@ class Tokeniser():
         
         # Match together each field with the corresponding value in the written instruction
         for i, fp in enumerate(fparts):
-            tokenised_instruction[fp] = parts[i]
+            tokenised_instruction[fp] = parts[i].lower()
 
         return tokenised_instruction
     

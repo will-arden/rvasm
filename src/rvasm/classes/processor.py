@@ -56,9 +56,6 @@ class Processor():
 
             for key, value in row.items():
 
-                # Ensure every field is lower-case
-                row[key] = row[key].lower()
-
                 # No need to check instruction keyword
                 if (key == "instr"):
                     continue
