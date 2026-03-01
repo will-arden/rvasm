@@ -1,8 +1,8 @@
 import argparse
 from typing import TextIO
 
-from .classes.library import Library
-from .classes.processor import Processor
+from .library import Library
+from .processor import Processor
 
 def main():
 

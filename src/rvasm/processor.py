@@ -1,4 +1,4 @@
-from rvasm.classes.tokeniser import Tokeniser
+from rvasm.tokeniser import Tokeniser
 
 class Processor():
 

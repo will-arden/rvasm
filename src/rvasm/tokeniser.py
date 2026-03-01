@@ -1,6 +1,6 @@
 import re
 
-from rvasm.classes.library import Library
+from rvasm.library import Library
 
 class Tokeniser():
 
