@@ -41,40 +41,39 @@ class Processor():
             self.labels.append(label)
             return
 
-        # Parse instructions
+        # Tokenise instructions
         instr = self.tokeniser.Tokenise(line)
+
+        # Look-up the library data for this instruction
+        lib_data = self.library.WorkingLibraryLookUp(instr["instr"])
+
+        # Iterate through the parts of the tokenised instruction, ensuring they are all in order
+        for key, value in instr.items():
+
+            # No need to check the instruction keyword
+            if (key == "instr"):
+                continue
+
+            # Ensure any x's are removed from register fields, then convert to an integer between 0-31
+            if (key in ("rd", "rs1", "rs2")):
+                instr[key] = instr[key].replace("x", "")
+                instr[key] = int(instr[key])
+                if (instr[key] < 0 or instr[key] > 31):
+                    raise self.ProcessorError(f"Register {str(instr[key])} outside of range 0-31.")
+                
+            # Resolve labels
+            if ((key == "imm") and (not instr[key].isdigit())):
+                for lbl in self.labels:
+                    if (lbl["name"] == instr[key]):
+                        instr[key] = lbl["index"] * int(lib_data[2] / 8)
+
+            # Convert immediate values to integers (if they are not already)
+            if (key == "imm"):
+                instr[key] = int(instr[key])
+
+        # When done, increment the index and append the instruction to the list of parsed instructions
         self.index += 1
         self.instructions.append(instr)
-
-    # Method which replaces labels with actual addresses, converts immediates to their proper value, etc.
-    def MagicWand(self):
-        for row in self.instructions:
-
-            # Look-up the library data for this instruction
-            row_data = self.library.WorkingLibraryLookUp(row["instr"])
-
-            for key, value in row.items():
-
-                # No need to check instruction keyword
-                if (key == "instr"):
-                    continue
-
-                # Ensure any x's are removed from register fields, then convert to an integer between 0-31
-                if (key in ("rd", "rs1", "rs2")):
-                    row[key] = row[key].replace("x", "")
-                    row[key] = int(row[key])
-                    if (row[key] < 0 or row[key] > 31):
-                        raise self.ProcessorError(f"Register {str(row[key])} outside of range 0-31.")
-                    
-                # Resolve labels
-                if ((key == "imm") and (not row[key].isdigit())):
-                    for lbl in self.labels:
-                        if (lbl["name"] == row[key]):
-                            row[key] = lbl["index"] * int(row_data[2] / 8)
-
-                # Convert immediate values to integers (if they are not already)
-                if (key == "imm"):
-                    row[key] = int(row[key])
 
 
     # Method to generate the final machine code

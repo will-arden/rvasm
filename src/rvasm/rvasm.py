@@ -69,7 +69,6 @@ class RVAsm():
         for i, line in enumerate(file):                     # Process each line of the .asm file
             self.processor.ProcessLine(line)
 
-        self.processor.MagicWand()                          # Second pass to resolve labels
         self.bin = self.processor.GenerateBinaries()        # Create the machine code
         self._WriteOutput(                                  # Output the file to the current directory
             filename=output,
