@@ -78,10 +78,16 @@ class Library():
 
     # Method to compile a working library from the include list
     def _CompileWorkingLibrary(self):
+        self.working_lib = []
         for i in self.include:
+            include_found = False
             for isa_name, isa_data in self.ISAs.items():
                 if (i == isa_name):
                     self.working_lib.append(isa_data)
+                    include_found = True
+                    continue
+            if (not include_found):
+                raise self.LibraryError(f"The following ISA is not recognised: {i}")
         # self.working_lib = {n[0]: n[1:] for n in self.working_lib}
 
         # Check for duplicate instructions added to the working library

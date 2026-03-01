@@ -4,6 +4,9 @@ from typing import TextIO
 from .library import Library
 from .processor import Processor
 
+# Includes present by default
+DEFAULT_INCLUDES = ["RV32I"]
+
 def main():
 
     # Handle arguments
@@ -11,6 +14,7 @@ def main():
     parser.add_argument("input", help="input file path")
     parser.add_argument("-o", "--output", help="output file path")
     parser.add_argument("-f", "--format", help="output format (binary/hex)")
+    parser.add_argument("-i", "--include", nargs="*", help="include any number of supported RISC-V ISAs (""RV32I"" included by default)")
     args = parser.parse_args()
 
     rvasm = RVAsm()
@@ -19,12 +23,24 @@ def main():
         # Placeholder variables to pass to rvasm object
         OUTPUT = None
         OUTPUT_FORMAT = None
+        INCLUDES = None
 
         # Overwrite placeholders with any arguments (if present)
         if (args.output):
             OUTPUT = args.output
         if (args.format):
             OUTPUT_FORMAT = args.format
+        if (args.include):
+            INCLUDES = args.include
+
+        # Include ISAs
+        if (INCLUDES and len(INCLUDES) > 0):
+            for isa in INCLUDES:
+                isa = isa.upper()
+
+                # Ignore any includes specified which are already present by default
+                if (not (isa in DEFAULT_INCLUDES)):
+                    rvasm.IncludeISA(isa)
         
         # Go!
         rvasm.Assemble(f, output=OUTPUT, output_format=OUTPUT_FORMAT)
@@ -33,7 +49,7 @@ class RVAsm():
 
     def __init__(self):
         self.library = Library()                        # Create a new Library object
-        self.include = ["RV32I"]                        # Include RV32I as a minimum
+        self.include = DEFAULT_INCLUDES                 # Include RV32I as a minimum
         self._UpdateWorkingLibrary()                    # Update and compile the working library based on the include list
         self.processor = Processor(self.library)        # Create a Processor object with the shared library
         self.bin = None                                 # Variable to hold the assembled machine code
@@ -45,7 +61,7 @@ class RVAsm():
     # Method to reset the assembler
     def Reset(self):
         self.processor.Reset()
-        self.include = ["RV32I"]
+        self.include = DEFAULT_INCLUDES
         self._UpdateWorkingLibrary()
 
     # Method to include an ISA of a particular name for use
