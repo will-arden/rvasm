@@ -61,6 +61,9 @@ class Processor():
                 if (instr[key] < 0 or instr[key] > 31):
                     raise self.ProcessorError(f"Register {str(instr[key])} outside of range 0-31.")
                 
+                # Convert the now integer register fields into binary strings of the correct length
+                instr[key] = format(instr[key], "05b")
+                
             # Resolve labels
             if ((key == "imm") and (not instr[key].isdigit())):
                 for lbl in self.labels:
@@ -71,53 +74,52 @@ class Processor():
             if (key == "imm"):
                 instr[key] = int(instr[key])
 
-        # When done, increment the index and append the instruction to the list of parsed instructions
+        # Finally, increment the index and append the instruction to the list of parsed instructions
         self.index += 1
         self.instructions.append(instr)
-
 
     # Method to generate the final machine code
     def GenerateBinaries(self):
         machine_code = []
 
         for row in self.instructions:
-            row_data = self.library.WorkingLibraryLookUp(row["instr"])
+            lib_data = self.library.WorkingLibraryLookUp(row["instr"])
 
             line = None
-            opcode = row_data[4]
-            funct3 = row_data[5]
-            funct7 = row_data[6]
+            opcode = lib_data[4]
+            funct3 = lib_data[5]
+            funct7 = lib_data[6]
             
             # Pattern is dependent on the instruction type
-            match row_data[3]:
+            match lib_data[3]:
 
                 case "R":
-                    line = funct7 + format(row["rs2"], "05b") + format(row["rs1"], "05b") + funct3 + format(row["rd"], "05b") + opcode
+                    line = funct7 + row["rs2"] + row["rs1"] + funct3 + row["rd"] + opcode
 
                 case "I":
-                    line = format(row["imm"], "012b") + format(row["rs1"], "05b") + funct3 + format(row["rd"], "05b") + opcode
+                    line = format(row["imm"], "012b") + row["rs1"] + funct3 + row["rd"] + opcode
 
                 case "S":
                     immediate = format(row["imm"], "012b")
-                    line = immediate[0:7] + format(row["rs2"], "05b") + format(row["rs1"], "05b") + funct3 + immediate[7:] + opcode
+                    line = immediate[0:7] + row["rs2"] + row["rs1"] + funct3 + immediate[7:] + opcode
 
                 case "B":
                     immediate = format(row["imm"], "013b")
-                    line = immediate[0] + immediate[2:8] + format(row["rs2"], "05b") + format(row["rs1"], "05b") + funct3 + immediate[8:12] + immediate[1] + opcode
+                    line = immediate[0] + immediate[2:8] + row["rs2"] + row["rs1"] + funct3 + immediate[8:12] + immediate[1] + opcode
 
                 case "U":
                     immediate = format(row["imm"], "032b")
-                    line = immediate[:19] + format(row["rd"], "05b") + opcode
+                    line = immediate[:19] + row["rd"] + opcode
 
                 case "J":
                     immediate = format(row["imm"], "032b")
-                    line = immediate[:20] + format(row["rd"], "05b") + opcode
+                    line = immediate[:20] + row["rd"] + opcode
 
                 case _:
-                    raise ASMDeveloperError("Could not associate instruction type with a known value!")
+                    raise self.ProcessorError(f"Could not associate instruction type {lib_data[3]} with a known value!")
 
             # Check that the length of the instruction matches what is expected
-            if (len(line) != row_data[2]):
+            if (len(line) != lib_data[2]):
                 raise self.ProcessorError("Encountered an unexpected instruction length while generating machine code.")
             
             # Append the line to the list of machine code lines
