@@ -3,7 +3,6 @@ from typing import TextIO
 
 from .classes.library import Library
 from .classes.processor import Processor
-from .util.exceptions import ASMIncludeError
 
 def main():
 
@@ -13,9 +12,6 @@ def main():
     parser.add_argument("-o", "--output", help="output file path")
     parser.add_argument("-f", "--format", help="output format (binary/hex)")
     args = parser.parse_args()
-
-    # Optional arguments
-
 
     rvasm = RVAsm()
     with open(args.input, "r", encoding="utf-8") as f:
@@ -42,6 +38,10 @@ class RVAsm():
         self.processor = Processor(self.library)        # Create a Processor object with the shared library
         self.bin = None                                 # Variable to hold the assembled machine code
 
+    class RVAsmError(Exception):
+        def __init__(self, message: str):
+            super().__init__(message)
+
     # Method to reset the assembler
     def Reset(self):
         self.processor.Reset()
@@ -51,7 +51,7 @@ class RVAsm():
     # Method to include an ISA of a particular name for use
     def IncludeISA(self, name):
         if (name in self.include):
-            raise ASMIncludeError("ISA name can only be included once.", name)
+            raise self.RVAsmError(f"ISA name can only be included once: ({name})")
         self.include.append(name)
         self._UpdateWorkingLibrary()
 

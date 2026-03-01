@@ -1,7 +1,4 @@
 from rvasm.classes.tokeniser import Tokeniser
-from rvasm.util.exceptions import ASMSyntaxError
-from rvasm.util.exceptions import ASMLogicError
-from rvasm.util.exceptions import ASMDeveloperError
 
 class Processor():
 
@@ -13,7 +10,9 @@ class Processor():
         self.line_counter = 0                   # Count of the number of lines processed
         self.tokeniser = Tokeniser(library)     # Object responsible for tokenising instructions
 
-        # TODO: I need a class for crunching the tokenised instructions into machine code
+    class ProcessorError(Exception):
+        def __init__(self, message):
+            super().__init__(message)
 
     # Method to reset the Processor, ready for another file to assemble
     def Reset(self):
@@ -36,7 +35,7 @@ class Processor():
             label_parts = line.split(":")
 
             if (label_parts[1].rstrip()):
-                raise ASMSyntaxError("Unexpected characters following label declaration.", self.line_number, line)
+                raise self.ProcessorError(f"Unexpected characters following label declaration: {line}")
 
             label = {"name": label_parts[0], "index": self.index}
             self.labels.append(label)
@@ -65,7 +64,7 @@ class Processor():
                     row[key] = row[key].replace("x", "")
                     row[key] = int(row[key])
                     if (row[key] < 0 or row[key] > 31):
-                        raise ASMLogicError("Register outside of range 0-31.", str(row[key]))
+                        raise self.ProcessorError(f"Register {str(row[key])} outside of range 0-31.")
                     
                 # Resolve labels
                 if ((key == "imm") and (not row[key].isdigit())):
@@ -120,7 +119,7 @@ class Processor():
 
             # Check that the length of the instruction matches what is expected
             if (len(line) != row_data[2]):
-                raise ASMDeveloperError("Encountered an unexpected instruction length while generating machine code.")
+                raise self.ProcessorError("Encountered an unexpected instruction length while generating machine code.")
             
             # Append the line to the list of machine code lines
             machine_code.append(line)
