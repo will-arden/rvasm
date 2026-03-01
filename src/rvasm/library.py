@@ -1,6 +1,3 @@
-from rvasm.util.exceptions import ASMDeveloperError
-from rvasm.util.exceptions import ASMIncludeError
-
 class Library():
 
     # At runtime, this will be populated with the included instructions
@@ -68,11 +65,15 @@ class Library():
         self._AddToISA("RV32I", ("ecall", "F6", 32, "", "1110011", "000", None))
         self._AddToISA("RV32I", ("ebreak", "F6", 32, "", "1110011", "000", None))
 
+    class LibraryError(Exception):
+        def __init__(self, message: str):
+            super().__init__(message)
+
 
     # Method to make adding new instructions easy and readable (only intended for use within this class)
     def _AddToISA(self, ISA: str, data: tuple):
         if not (ISA in self.ISAs):
-            raise ASMDeveloperError("You can't add to an ISA which doesn't exist!")
+            raise self.LibraryError(f"You can't add an instruction to an ISA ({ISA}) which doesn't exist!")
         self.ISAs[ISA].append(data)
 
     # Method to compile a working library from the include list
@@ -88,7 +89,7 @@ class Library():
         for include in self.working_lib:
             for entry in include:
                 if (entry[0] in seen_instructions):
-                    raise ASMIncludeError("Found multiple definitions for the same instruction when compiling the working library.", entry[0])
+                    raise self.LibraryError(f"Found multiple definitions for the same instruction ({entry[0]}) when compiling the working library.")
                 seen_instructions.append(entry[0])
 
     # Method to update the working library

@@ -1,24 +1,33 @@
-# Packages
+import argparse
 from typing import TextIO
 
-# Local imports
-from .classes.library import Library
-from .classes.processor import Processor
-from .util.exceptions import ASMIncludeError
+from .library import Library
+from .processor import Processor
 
 def main():
-    import sys
 
-    if (len(sys.argv) < 2):
-        print(f"Usage: rvasm <input_file>")
-        # print(f"Usage: rvasm <input_file> <optional|output_file> <optional|hex/binary>")
-        return
-    
-    input_file = sys.argv[1]
+    # Handle arguments
+    parser = argparse.ArgumentParser(description="A RISC-V assembler.")
+    parser.add_argument("input", help="input file path")
+    parser.add_argument("-o", "--output", help="output file path")
+    parser.add_argument("-f", "--format", help="output format (binary/hex)")
+    args = parser.parse_args()
 
     rvasm = RVAsm()
-    with open(input_file, "r", encoding="utf-8") as f:
-        rvasm.Assemble(f)
+    with open(args.input, "r", encoding="utf-8") as f:
+
+        # Placeholder variables to pass to rvasm object
+        OUTPUT = None
+        OUTPUT_FORMAT = None
+
+        # Overwrite placeholders with any arguments (if present)
+        if (args.output):
+            OUTPUT = args.output
+        if (args.format):
+            OUTPUT_FORMAT = args.format
+        
+        # Go!
+        rvasm.Assemble(f, output=OUTPUT, output_format=OUTPUT_FORMAT)
 
 class RVAsm():
 
@@ -29,6 +38,10 @@ class RVAsm():
         self.processor = Processor(self.library)        # Create a Processor object with the shared library
         self.bin = None                                 # Variable to hold the assembled machine code
 
+    class RVAsmError(Exception):
+        def __init__(self, message: str):
+            super().__init__(message)
+
     # Method to reset the assembler
     def Reset(self):
         self.processor.Reset()
@@ -38,24 +51,28 @@ class RVAsm():
     # Method to include an ISA of a particular name for use
     def IncludeISA(self, name):
         if (name in self.include):
-            raise ASMIncludeError("ISA name can only be included once.", name)
+            raise self.RVAsmError(f"ISA name can only be included once: ({name})")
         self.include.append(name)
         self._UpdateWorkingLibrary()
 
     # Method to assemble a .asm file, producing a .dat output
-    def Assemble(self, file: TextIO, output="out.dat", output_format="hex"):
+    def Assemble(self, file: TextIO, output=None, output_format=None):
+
+        # Internally set default arguments (easier for argparse)
+        if (not output):
+            output = "out.dat"
+        if (not output_format):
+            output_format = "hex"
 
         self.processor.Reset()                              # Reset the processor (but maintain includes)
         
         for i, line in enumerate(file):                     # Process each line of the .asm file
             self.processor.ProcessLine(line)
 
-        self.processor.MagicWand()                          # Second pass to resolve labels
         self.bin = self.processor.GenerateBinaries()        # Create the machine code
         self._WriteOutput(                                  # Output the file to the current directory
             filename=output,
             output_format=output_format)
-
 
     # Method to update the working library following changes to the include list
     def _UpdateWorkingLibrary(self):

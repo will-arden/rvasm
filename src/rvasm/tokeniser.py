@@ -1,15 +1,17 @@
 import re
 
-from rvasm.classes.library import Library
-from rvasm.util.exceptions import ASMSyntaxError
-from rvasm.util.exceptions import ASMIncludeError
-from rvasm.util.exceptions import ASMDeveloperError
+from rvasm.library import Library
 
 class Tokeniser():
 
     def __init__(self, library):
         self.library = library
 
+    class TokeniserError(Exception):
+        def __init__(self, message: str):
+            super().__init__(message)
+
+    # Method to tokenise an instruction
     def Tokenise(self, line: str):
         tokenised_instruction = {}
         library_data = None
@@ -29,14 +31,14 @@ class Tokeniser():
 
         # Throw an error if the instruction can't be found in the working library
         if (library_data == None):
-            raise ASMIncludeError("Unknown instruction which cannot be found in the working library.", instr)
+            raise self.TokeniserError(f"Unknown instruction {instr} which cannot be found in the working library.")
 
         # Retrieve the format string from the library
         for format, value in self.library.GetFormats().items():
             if (library_data[1] == format):
                 format_string = value
         if (format_string == None):
-            raise ASMDeveloperError("Couldn't find an instruction format!", library_data[1])
+            raise self.TokeniserError(f"Couldn't find the instruction format: {library_data[1]}")
 
         # Tokenise the format string
         fparts = re.split(r"[,()\s]+", format_string)           # Split for whitespace, commas and brackets
@@ -44,7 +46,7 @@ class Tokeniser():
         
         # Match together each field with the corresponding value in the written instruction
         for i, fp in enumerate(fparts):
-            tokenised_instruction[fp] = parts[i]
+            tokenised_instruction[fp] = parts[i].lower()
 
         return tokenised_instruction
     
