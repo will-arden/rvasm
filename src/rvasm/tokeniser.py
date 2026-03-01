@@ -24,10 +24,9 @@ class Tokeniser():
         instr = parts[0]                                    # Identify the instruction keyword
 
         # Firstly, retrieve the data about the instruction from the library
-        for include in self.library.GetWorkingLibrary():
-            for entry in include:
-                if (instr == entry[0]):
-                    library_data = entry
+        for instruction in self.library.GetWorkingLibrary():
+            if (instr == instruction["instr"]):
+                library_data = instruction
 
         # Throw an error if the instruction can't be found in the working library
         if (library_data == None):
@@ -35,10 +34,10 @@ class Tokeniser():
 
         # Retrieve the format string from the library
         for format, value in self.library.GetFormats().items():
-            if (library_data[1] == format):
+            if (library_data["format"] == format):
                 format_string = value
         if (format_string == None):
-            raise self.TokeniserError(f"Couldn't find the instruction format: {library_data[1]}")
+            raise self.TokeniserError(f"Couldn't find the instruction format: {library_data['format']}")
 
         # Tokenise the format string
         fparts = re.split(r"[,()\s]+", format_string)           # Split for whitespace, commas and brackets

@@ -1,121 +1,40 @@
 import json
 from typing import TextIO
+import importlib.resources as res 
+from pathlib import Path
 
 class Library():
 
     # At runtime, this will be populated with the included instructions
-    include = []
     working_lib = []
 
-    # List of expected instruction formats
-    formats = {
-        "F0": "instr rd, rs1, rs2",
-        "F1": "instr rd, imm",
-        "F2": "instr rs1, rs2, imm",
-        "F3": "instr rd, rs1, imm",
-        "F4": "instr rd, imm(rs1)",
-        "F5": "instr rs2, imm(rs1)",
-        "F6": "instr"
-    }
-
-    # Empty ISAs will be populated with tuples on class initialisation
-    # Format: (instr: str, format: str, opcode: str, funct3: str, funct7: str)
-    ISAs = {
-        "RV32I": []
-    }
+    # Declared ISAs
+    core_isas = {}          # These ISAs are supported by default - simply include them to use
+    extra_isas = {}         # Extra/custom ISAs must be declared before they can be included for use
 
     def __init__(self):
 
-        # Format: (instr: str, format: str, length (bits): int, type: str, opcode: str, funct3: str, funct7: str)
-        self.AddToISA("RV32I", ("lui", "F1", 32, "U", "0110111", None, None))
-        self.AddToISA("RV32I", ("auipc", "F1", 32, "U", "0010111", None, None))
-        self.AddToISA("RV32I", ("jal", "F1", 32, "J", "1101111", None, None))
-        self.AddToISA("RV32I", ("beq", "F2", 32, "B", "1100011", "000", None))
-        self.AddToISA("RV32I", ("bne", "F2", 32, "B", "1100011", "001", None))
-        self.AddToISA("RV32I", ("blt", "F2", 32, "B", "1100011", "100", None))
-        self.AddToISA("RV32I", ("bge", "F2", 32, "B", "1100011", "101", None))
-        self.AddToISA("RV32I", ("bltu", "F2", 32, "B", "1100011", "110", None))
-        self.AddToISA("RV32I", ("bgeu", "F2", 32, "B", "1100011", "111", None))
-        self.AddToISA("RV32I", ("jalr", "F3", 32, "I", "1100111", "000", None))
-        self.AddToISA("RV32I", ("lb", "F4", 32, "I", "0000011", "000", None))
-        self.AddToISA("RV32I", ("lh", "F4", 32, "I", "0000011", "001", None))
-        self.AddToISA("RV32I", ("lw", "F4", 32, "I", "0000011", "010", None))
-        self.AddToISA("RV32I", ("lbu", "F4", 32, "I", "0000011", "100", None))
-        self.AddToISA("RV32I", ("lhu", "F4", 32, "I", "0000011", "101", None))
-        self.AddToISA("RV32I", ("addi", "F3", 32, "I", "0010011", "000", None))
-        self.AddToISA("RV32I", ("slti", "F3", 32, "I", "0010011", "010", None))
-        self.AddToISA("RV32I", ("sltiu", "F3", 32, "I", "0010011", "011", None))
-        self.AddToISA("RV32I", ("xori", "F3", 32, "I", "0010011", "100", None))
-        self.AddToISA("RV32I", ("ori", "F3", 32, "I", "0010011", "110", None))
-        self.AddToISA("RV32I", ("andi", "F3", 32, "I", "0010011", "111", None))
-        self.AddToISA("RV32I", ("sb", "F5", 32, "S", "0100011", "000", None))
-        self.AddToISA("RV32I", ("sh", "F5", 32, "S", "0100011", "001", None))
-        self.AddToISA("RV32I", ("sw", "F5", 32, "S", "0100011", "010", None))
-        self.AddToISA("RV32I", ("slli", "F3", 32, "I", "0010011", "001", "0000000"))
-        self.AddToISA("RV32I", ("srli", "F3", 32, "I", "0010011", "101", "0000000"))
-        self.AddToISA("RV32I", ("srai", "F3", 32, "I", "0010011", "101", "0100000"))
-        self.AddToISA("RV32I", ("add", "F0", 32, "R", "0110011", "000", "0000000"))
-        self.AddToISA("RV32I", ("sub", "F0", 32, "R", "0110011", "000", "0100000"))
-        self.AddToISA("RV32I", ("sll", "F0", 32, "R", "0110011", "001", "0000000"))
-        self.AddToISA("RV32I", ("slt", "F0", 32, "R", "0110011", "010", "0000000"))
-        self.AddToISA("RV32I", ("sltu", "F0", 32, "R", "0110011", "011", "0000000"))
-        self.AddToISA("RV32I", ("xor", "F0", 32, "R", "0110011", "100", "0000000"))
-        self.AddToISA("RV32I", ("srl", "F0", 32, "R", "0110011", "101", "0000000"))
-        self.AddToISA("RV32I", ("sra", "F0", 32, "R", "0110011", "101", "0100000"))
-        self.AddToISA("RV32I", ("or", "F0", 32, "R", "0110011", "110", "0000000"))
-        self.AddToISA("RV32I", ("and", "F0", 32, "R", "0110011", "111", "0000000"))
-        self.AddToISA("RV32I", ("fence", "F6", 32, "", "0001111", "000", None))
-        self.AddToISA("RV32I", ("ecall", "F6", 32, "", "1110011", "000", None))
-        self.AddToISA("RV32I", ("ebreak", "F6", 32, "", "1110011", "000", None))
+        # List of expected instruction formats
+        with res.files("rvasm.json").joinpath("formats.json").open("r") as f:
+            self.formats = json.load(f)
+
+        # Declare the core ISAs (within json/ directory)
+        for file in res.files("rvasm.json").iterdir():                              # Iterate through every JSON file
+            if (file.name.endswith(".json") and file.name != "formats.json"):
+                with file.open("r", encoding="utf-8-sig") as f:
+                    json_data = json.load(f)
+                    for isa_name, isa_data in json_data.items():                        # Add the ISA data to the dictionary
+                        self.core_isas[isa_name] = isa_data
 
     class LibraryError(Exception):
         def __init__(self, message: str):
             super().__init__(message)
 
-    # Method to add an empty ISA
-    def AddISA(self, ISA: str):
-        if (ISA in self.ISAs):
-            raise self.LibraryError(f"ISA {ISA} already exists!")
-        self.ISAs[ISA] = []
-
-    # Method to make adding new instructions easy and readable (only intended for use within this class)
-    def AddToISA(self, ISA: str, data: tuple):
-        if not (ISA in self.ISAs):
-            raise self.LibraryError(f"You can't add an instruction to an ISA ({ISA}) which doesn't exist!")
-        self.ISAs[ISA].append(data)
-
-    def AddFromJSON(self, json_file: TextIO):
-        json_data = json.load(json_file)
-
-        for isa, data in json_data.items():
-            for instruction in data:
-
-                # Collect the instruction information from the JSON
-                instr_info = (instruction["instr"],
-                            instruction["format"],
-                            instruction["byte_len"],
-                            instruction["type"],
-                            instruction["opcode"],
-                            instruction["funct3"],
-                            instruction["funct7"])
-                
-                self.AddISA(isa)                    # Declare the new ISA
-                self.AddToISA(isa, instr_info)      # Add the ISA to the library
-                json_file.seek(0)                   # Reset the read pointer to the beginning of the file for future calls
-
-    # Method to compile a working library from the include list
-    def _CompileWorkingLibrary(self):
-        self.working_lib = []
-        for i in self.include:
-            include_found = False
-            for isa_name, isa_data in self.ISAs.items():
-                if (i == isa_name):
-                    self.working_lib.append(isa_data)
-                    include_found = True
-                    continue
-            if (not include_found):
-                raise self.LibraryError(f"The following ISA is not recognised: {i}")
-        # self.working_lib = {n[0]: n[1:] for n in self.working_lib}
+    # Method to declare extra/custom ISA(s) using a JSON file
+    def DeclareFromJSON(self, json_file: TextIO):
+        json_data = json.load(json_file)                # Load the JSON file
+        for isa_name, isa_data in json_data.items():    # Iterate through ISAs
+            self.extra_isas[isa_name] = isa_data        # and add the data to the dictionary
 
         # Check for duplicate instructions added to the working library
         seen_instructions = []
@@ -125,10 +44,18 @@ class Library():
                     raise self.LibraryError(f"Found multiple definitions for the same instruction ({entry[0]}) when compiling the working library.")
                 seen_instructions.append(entry[0])
 
-    # Method to update the working library
+    # Method to update the working library based on a given include list
     def UpdateWorkingLibrary(self, include: list[str]):
-        self.include = include
-        self._CompileWorkingLibrary()       # For now, just re-compile everything
+        isa_found = False
+        for isa_to_include in include:                                      # Iterate through every ISA in the include list
+            for collection in (self.core_isas, self.extra_isas):                # Repeat for both core and extra ISA dictionaries
+                if (collection.get(isa_to_include)):
+                    isa_found = True
+                    for instruction in collection.get(isa_to_include):
+                        instr_to_add = instruction.copy()
+                        self.working_lib.append(instr_to_add)                   # Append the instruction to the working library
+            if (not isa_found):
+                raise self.LibraryError(f"Could not recognise ISA: {isa_to_include}")
 
     # Method to return the instruction formats
     def GetFormats(self):
@@ -138,13 +65,8 @@ class Library():
     def GetWorkingLibrary(self):
         return self.working_lib
     
-    # Method to return a specific ISA, given its name (e.g. "RV32I")
-    def _GetISA(self, name):
-        return self.ISAs[name]
-    
     # Method to lookup an instruction from the working library
-    def WorkingLibraryLookUp(self, search_term):
-        for isa in self.working_lib:
-            for entry in isa:
-                if (entry[0] == search_term):
-                    return entry
+    def WorkingLibraryLookUp(self, search_term: str):
+        for instruction in self.working_lib:
+            if (instruction["instr"] == search_term):
+                    return instruction

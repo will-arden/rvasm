@@ -5,7 +5,7 @@ from typing import TextIO
 from .library import Library
 from .processor import Processor
 
-# Includes present by default
+# Included JSON files present by default
 DEFAULT_INCLUDES = ["RV32I"]
 
 def main():

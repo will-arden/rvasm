@@ -1,0 +1,355 @@
+{
+    "RV32I": [
+        {
+            "instr": "lui",
+            "format": "F1",
+            "byte_len": 32,
+            "type": "U",
+            "opcode": "0110111",
+            "funct3": null,
+            "funct7": null
+        },
+        {
+            "instr": "auipc",
+            "format": "F1",
+            "byte_len": 32,
+            "type": "U",
+            "opcode": "0010111",
+            "funct3": null,
+            "funct7": null
+        },
+        {
+            "instr": "jal",
+            "format": "F1",
+            "byte_len": 32,
+            "type": "J",
+            "opcode": "1101111",
+            "funct3": null,
+            "funct7": null
+        },
+        {
+            "instr": "beq",
+            "format": "F2",
+            "byte_len": 32,
+            "type": "B",
+            "opcode": "1100011",
+            "funct3": "000",
+            "funct7": null
+        },
+        {
+            "instr": "bne",
+            "format": "F2",
+            "byte_len": 32,
+            "type": "B",
+            "opcode": "1100011",
+            "funct3": "001",
+            "funct7": null
+        },
+        {
+            "instr": "blt",
+            "format": "F2",
+            "byte_len": 32,
+            "type": "B",
+            "opcode": "1100011",
+            "funct3": "100",
+            "funct7": null
+        },
+        {
+            "instr": "bge",
+            "format": "F2",
+            "byte_len": 32,
+            "type": "B",
+            "opcode": "1100011",
+            "funct3": "101",
+            "funct7": null
+        },
+        {
+            "instr": "bltu",
+            "format": "F2",
+            "byte_len": 32,
+            "type": "B",
+            "opcode": "1100011",
+            "funct3": "110",
+            "funct7": null
+        },
+        {
+            "instr": "bgeu",
+            "format": "F2",
+            "byte_len": 32,
+            "type": "B",
+            "opcode": "1100011",
+            "funct3": "111",
+            "funct7": null
+        },
+        {
+            "instr": "jalr",
+            "format": "F3",
+            "byte_len": 32,
+            "type": "I",
+            "opcode": "1100111",
+            "funct3": "000",
+            "funct7": null
+        },
+        {
+            "instr": "lb",
+            "format": "F4",
+            "byte_len": 32,
+            "type": "I",
+            "opcode": "0000011",
+            "funct3": "000",
+            "funct7": null
+        },
+        {
+            "instr": "lh",
+            "format": "F4",
+            "byte_len": 32,
+            "type": "I",
+            "opcode": "0000011",
+            "funct3": "001",
+            "funct7": null
+        },
+        {
+            "instr": "lw",
+            "format": "F4",
+            "byte_len": 32,
+            "type": "I",
+            "opcode": "0000011",
+            "funct3": "010",
+            "funct7": null
+        },
+        {
+            "instr": "lbu",
+            "format": "F4",
+            "byte_len": 32,
+            "type": "I",
+            "opcode": "0000011",
+            "funct3": "100",
+            "funct7": null
+        },
+        {
+            "instr": "lhu",
+            "format": "F4",
+            "byte_len": 32,
+            "type": "I",
+            "opcode": "0000011",
+            "funct3": "101",
+            "funct7": null
+        },
+        {
+            "instr": "addi",
+            "format": "F3",
+            "byte_len": 32,
+            "type": "I",
+            "opcode": "0010011",
+            "funct3": "000",
+            "funct7": null
+        },
+        {
+            "instr": "slti",
+            "format": "F3",
+            "byte_len": 32,
+            "type": "I",
+            "opcode": "0010011",
+            "funct3": "010",
+            "funct7": null
+        },
+        {
+            "instr": "sltiu",
+            "format": "F3",
+            "byte_len": 32,
+            "type": "I",
+            "opcode": "0010011",
+            "funct3": "011",
+            "funct7": null
+        },
+        {
+            "instr": "xori",
+            "format": "F3",
+            "byte_len": 32,
+            "type": "I",
+            "opcode": "0010011",
+            "funct3": "100",
+            "funct7": null
+        },
+        {
+            "instr": "ori",
+            "format": "F3",
+            "byte_len": 32,
+            "type": "I",
+            "opcode": "0010011",
+            "funct3": "110",
+            "funct7": null
+        },
+        {
+            "instr": "andi",
+            "format": "F3",
+            "byte_len": 32,
+            "type": "I",
+            "opcode": "0010011",
+            "funct3": "111",
+            "funct7": null
+        },
+        {
+            "instr": "sb",
+            "format": "F5",
+            "byte_len": 32,
+            "type": "S",
+            "opcode": "0100011",
+            "funct3": "000",
+            "funct7": null
+        },
+        {
+            "instr": "sh",
+            "format": "F5",
+            "byte_len": 32,
+            "type": "S",
+            "opcode": "0100011",
+            "funct3": "001",
+            "funct7": null
+        },
+        {
+            "instr": "sw",
+            "format": "F5",
+            "byte_len": 32,
+            "type": "S",
+            "opcode": "0100011",
+            "funct3": "010",
+            "funct7": null
+        },
+        {
+            "instr": "slli",
+            "format": "F3",
+            "byte_len": 32,
+            "type": "I",
+            "opcode": "0010011",
+            "funct3": "001",
+            "funct7": "0000000"
+        },
+        {
+            "instr": "srli",
+            "format": "F3",
+            "byte_len": 32,
+            "type": "I",
+            "opcode": "0010011",
+            "funct3": "101",
+            "funct7": "0000000"
+        },
+        {
+            "instr": "srai",
+            "format": "F3",
+            "byte_len": 32,
+            "type": "I",
+            "opcode": "0010011",
+            "funct3": "101",
+            "funct7": "0100000"
+        },
+        {
+            "instr": "add",
+            "format": "F0",
+            "byte_len": 32,
+            "type": "R",
+            "opcode": "0110011",
+            "funct3": "000",
+            "funct7": "0000000"
+        },
+        {
+            "instr": "sub",
+            "format": "F0",
+            "byte_len": 32,
+            "type": "R",
+            "opcode": "0110011",
+            "funct3": "000",
+            "funct7": "0100000"
+        },
+        {
+            "instr": "sll",
+            "format": "F0",
+            "byte_len": 32,
+            "type": "R",
+            "opcode": "0110011",
+            "funct3": "001",
+            "funct7": "0000000"
+        },
+        {
+            "instr": "slt",
+            "format": "F0",
+            "byte_len": 32,
+            "type": "R",
+            "opcode": "0110011",
+            "funct3": "010",
+            "funct7": "0000000"
+        },
+        {
+            "instr": "sltu",
+            "format": "F0",
+            "byte_len": 32,
+            "type": "R",
+            "opcode": "0110011",
+            "funct3": "011",
+            "funct7": "0000000"
+        },
+        {
+            "instr": "xor",
+            "format": "F0",
+            "byte_len": 32,
+            "type": "R",
+            "opcode": "0110011",
+            "funct3": "100",
+            "funct7": "0000000"
+        },
+        {
+            "instr": "srl",
+            "format": "F0",
+            "byte_len": 32,
+            "type": "R",
+            "opcode": "0110011",
+            "funct3": "101",
+            "funct7": "0000000"
+        },
+        {
+            "instr": "sra",
+            "format": "F0",
+            "byte_len": 32,
+            "type": "R",
+            "opcode": "0110011",
+            "funct3": "000",
+            "funct7": "0100000"
+        },
+        {
+            "instr": "or",
+            "format": "F0",
+            "byte_len": 32,
+            "type": "R",
+            "opcode": "0110011",
+            "funct3": "110",
+            "funct7": "0000000"
+        },
+        {
+            "instr": "and",
+            "format": "F0",
+            "byte_len": 32,
+            "type": "R",
+            "opcode": "0110011",
+            "funct3": "111",
+            "funct7": "0000000"
+        },
+        {
+            "instr": "fence",
+            "format": "F6",
+            "byte_len": 32,
+            "type": "",
+            "opcode": "0001111",
+            "funct3": "000",
+            "funct7": null
+        },
+        {
+            "instr": "ebreak",
+            "format": "F6",
+            "byte_len": 32,
+            "type": "",
+            "opcode": "1110011",
+            "funct3": "000",
+            "funct7": null
+        }
+    ]
+}
