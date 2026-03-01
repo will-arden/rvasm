@@ -1,4 +1,5 @@
 import argparse
+import json
 from typing import TextIO
 
 from .library import Library
@@ -71,6 +72,16 @@ class RVAsm():
         self.include.append(name)
         self._UpdateWorkingLibrary()
 
+    # Method to include ISA data from a JSON file
+    def IncludeFromJSON(self, json_file: TextIO):
+        self.library.AddFromJSON(json_file)
+
+        # Update the include list
+        json_data = json.load(json_file)
+        for isa_name, isa_data in json_data.items():
+            if not (isa_name in self.include):
+                self.IncludeISA(isa_name)
+                
     # Method to assemble a .asm file, producing a .dat output
     def Assemble(self, file: TextIO, output=None, output_format=None):
 
