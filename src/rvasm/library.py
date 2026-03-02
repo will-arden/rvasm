@@ -53,10 +53,6 @@ class Library():
             if (not isa_found):
                 raise self.LibraryError(f"Could not recognise ISA: {isa_to_include}")
     
-    # Method to return the working library
-    def GetWorkingLibrary(self):
-        return self.working_lib
-    
     # Method to lookup an instruction from the working library
     def WorkingLibraryLookUp(self, search_term: str):
         for instruction in self.working_lib:

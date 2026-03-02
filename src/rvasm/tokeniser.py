@@ -23,9 +23,7 @@ class Tokeniser():
         instr = parts[0]                                    # Identify the instruction keyword
 
         # Firstly, retrieve the data about the instruction from the library
-        for instruction in self.library.GetWorkingLibrary():
-            if (instr == instruction["instr"]):
-                library_data = instruction
+        library_data = self.library.WorkingLibraryLookUp(instr)
 
         # Throw an error if the instruction can't be found in the working library
         if (library_data == None):
