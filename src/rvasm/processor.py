@@ -68,10 +68,8 @@ class Processor():
                 
             # Resolve labels
             if ((key == "imm") and (not instr[key].isdigit())):
-                print(f"Label detected: {instr[key]}")
                 for lbl in self.labels:
                     if (lbl["name"] == instr[key]):
-                        print(f"Lib data is {lib_data}")
                         instr[key] = lbl["index"] * int(lib_data["byte_len"] / 8)
 
             # Convert immediate values to integers (if they are not already)
