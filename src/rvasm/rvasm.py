@@ -74,10 +74,10 @@ class RVAsm():
 
     # Method to include ISA data from a JSON file
     def IncludeFromJSON(self, json_file: TextIO):
-        self.library.AddFromJSON(json_file)
+        json_data = json.load(json_file)
+        self.library.DeclareFromJSONData(json_data)
 
         # Update the include list
-        json_data = json.load(json_file)
         for isa_name, isa_data in json_data.items():
             if not (isa_name in self.include):
                 self.IncludeISA(isa_name)

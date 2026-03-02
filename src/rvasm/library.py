@@ -27,18 +27,16 @@ class Library():
             super().__init__(message)
 
     # Method to declare extra/custom ISA(s) using a JSON file
-    def DeclareFromJSON(self, json_file: TextIO):
-        json_data = json.load(json_file)                # Load the JSON file
+    def DeclareFromJSONData(self, json_data: json):
         for isa_name, isa_data in json_data.items():    # Iterate through ISAs
             self.extra_isas[isa_name] = isa_data        # and add the data to the dictionary
 
         # Check for duplicate instructions added to the working library
         seen_instructions = []
-        for include in self.working_lib:
-            for entry in include:
-                if (entry[0] in seen_instructions):
-                    raise self.LibraryError(f"Found multiple definitions for the same instruction ({entry[0]}) when compiling the working library.")
-                seen_instructions.append(entry[0])
+        for entry in self.working_lib:
+            if (entry["instr"] in seen_instructions):
+                raise self.LibraryError(f"Found multiple definitions for the same instruction ({entry['instr']}) when compiling the working library.")
+            seen_instructions.append(entry["instr"])
 
     # Method to update the working library based on a given include list
     def UpdateWorkingLibrary(self, include: list[str]):
