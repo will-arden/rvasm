@@ -5,7 +5,7 @@ from pathlib import Path
 
 class Library():
 
-    # At runtime, this will be populated with the included instructions
+    # At runtime, this will be populated with declared and included instructions
     working_lib = []
 
     # Declared ISAs
