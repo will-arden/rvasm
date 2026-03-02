@@ -94,7 +94,13 @@ class RVAsm():
         self.processor.Reset()                              # Reset the processor (but maintain includes)
         
         for i, line in enumerate(file):                     # Process each line of the .asm file
-            self.processor.ProcessLine(line)
+            try:
+                self.processor.ProcessLine(line)
+            except Exception as e:
+                print(f"\n{type(e).__name__} caused the following line to fail:")
+                print(line.rstrip("\n"))
+                print(f"{e}")
+                exit()
 
         self.bin = self.processor.GenerateBinaries()        # Create the machine code
         self._WriteOutput(                                  # Output the file to the current directory

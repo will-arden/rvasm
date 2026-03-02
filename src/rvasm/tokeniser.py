@@ -36,8 +36,8 @@ class Tokeniser():
             raise self.TokeniserError(f"Couldn't find the instruction format: {library_data['format']}")
 
         # Tokenise the format string
-        fparts = re.split(r"[,()\s]+", library_data["format"])           # Split for whitespace, commas and brackets
-        fparts = [fp.strip() for fp in fparts if fp.strip()]    # Prune separators and useless parts
+        fparts = re.split(r"[,()\s]+", library_data["format"])      # Split for whitespace, commas and brackets
+        fparts = [fp.strip() for fp in fparts if fp.strip()]        # Prune separators and useless parts
         
         # Match together each field with the corresponding value in the written instruction
         for i, fp in enumerate(fparts):
