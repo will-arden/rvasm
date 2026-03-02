@@ -3,11 +3,10 @@ from rvasm.tokeniser import Tokeniser
 class Processor():
 
     def __init__(self, library):
-        self.library = library                  # Library accessible to all classes
+        self.library = library                  # Shared Library object
         self.instructions = []                  # Store tokenised instructions
         self.labels = []                        # Store labels with a program index
         self.index = 0                          # Program index (program counter / 4)
-        self.line_counter = 0                   # Count of the number of lines processed
         self.tokeniser = Tokeniser(library)     # Object responsible for tokenising instructions
 
     class ProcessorError(Exception):
@@ -20,7 +19,7 @@ class Processor():
         self.labels = []
 
     # Method to process the next line of the assembly file
-    def ProcessLine(self, line):
+    def ProcessLine(self, line: str):
 
         line = line.rstrip()                # Strip the newline character from the line
         line = line.split("#")[0]           # Ignore comments
@@ -46,6 +45,8 @@ class Processor():
 
         # Look-up the library data for this instruction
         lib_data = self.library.WorkingLibraryLookUp(instr["instr"])
+        if (not lib_data):
+            raise self.ProcessorError(f"Could not find instruction {instr['instr']} in the working library.")
 
         # Iterate through the parts of the tokenised instruction, ensuring they are all in order
         for key, value in instr.items():
@@ -68,7 +69,7 @@ class Processor():
             if ((key == "imm") and (not instr[key].isdigit())):
                 for lbl in self.labels:
                     if (lbl["name"] == instr[key]):
-                        instr[key] = lbl["index"] * int(lib_data[2] / 8)
+                        instr[key] = lbl["index"] * int(lib_data["byte_len"] / 8)
 
             # Convert immediate values to integers (if they are not already)
             if (key == "imm"):
@@ -86,12 +87,12 @@ class Processor():
             lib_data = self.library.WorkingLibraryLookUp(row["instr"])
 
             line = None
-            opcode = lib_data[4]
-            funct3 = lib_data[5]
-            funct7 = lib_data[6]
+            opcode = lib_data["opcode"]
+            funct3 = lib_data["funct3"]
+            funct7 = lib_data["funct7"]
             
             # Pattern is dependent on the instruction type
-            match lib_data[3]:
+            match lib_data["type"]:
 
                 case "R":
                     line = funct7 + row["rs2"] + row["rs1"] + funct3 + row["rd"] + opcode
@@ -119,7 +120,7 @@ class Processor():
                     raise self.ProcessorError(f"Could not associate instruction type {lib_data[3]} with a known value!")
 
             # Check that the length of the instruction matches what is expected
-            if (len(line) != lib_data[2]):
+            if (len(line) != lib_data["byte_len"]):
                 raise self.ProcessorError("Encountered an unexpected instruction length while generating machine code.")
             
             # Append the line to the list of machine code lines

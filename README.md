@@ -1,5 +1,5 @@
 # rvasm: A Python-Based RISC-V Assembler
-**rvasm** aims to provide a simple and easy-to-use RISC-V assembler, as both a **command-line tool** and a **Python package**.
+**rvasm** aims to provide a simple and easy-to-use RISC-V assembler, as both a **command-line tool** and a **Python package**. **rvasm** makes it easy to define and use **custom instructions**, simply by providing a JSON file.
 
 ## Getting started
 You can install **rvasm** using `pip`, as follows:
@@ -15,7 +15,7 @@ This will produce an output file `out.dat`, containing your assembled RV32I in h
 > `rvasm --help`
 
 Here is an example on how you can use **rvasm** in a Python project:
->```
+>```python
 >import rvasm
 >my_assembler = rvasm.RVAsm()                # Create an Assembler object
 >with open("my_input_file.asm", "r") as f:   # Open the assembly file
@@ -23,4 +23,39 @@ Here is an example on how you can use **rvasm** in a Python project:
 >```
 
 ## Assembling custom instructions
-More is coming on this soon...
+**rvasm** makes assembling custom instructions straightforward.
+
+Firstly, create a **JSON file** detailing your custom instructions ([use this reference](https://github.com/will-arden/rvasm/tree/main/src/rvasm/json/RV32I.json)). You can specify one or more RISC-V extensions in the same file, or use multiple files. An example would be like so:
+> ```json
+> {
+>     "MY_CUSTOM_EXTENSION": [
+>         {
+>             "instr": "addi",
+>             "format": "instr rd, rs1, imm",
+>             "byte_len": 32,
+>             "type": "I",
+>             "opcode": "0010011",
+>             "funct3": "000",
+>             "funct7": null
+>         }
+>     ]
+> }
+> ```
+
+To include the new extension(s) from the command line, use the `--include` option, as below:
+> `rvasm my_file.asm --include my_custom_extension.json`
+
+The following example shows how you can use **rvasm** to assemble custom RISC-V instructions in your Python code:
+> ```python
+> import rvasm
+> asm = rvasm.RVAsm()
+> with open("my_custom_extension.json", "r") as f:
+>     asm.IncludeFromJSON(f)
+> with open("my_file.asm", "r") as f:
+>     asm.Assemble(f)
+> ```
+
+For now, it is not possible to add custom instruction *types* - this project is a work-in-progress, so please keep checking in!
+
+## License
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
