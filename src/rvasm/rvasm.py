@@ -8,15 +8,17 @@ from .processor import Processor
 def main():
 
     # Handle arguments
-    parser = argparse.ArgumentParser(description="A RISC-V assembler.")
+    parser = argparse.ArgumentParser(description="A Python-based, JSON-driven RISC-V assembler.")
     parser.add_argument("input", help="input file path")
     parser.add_argument("-o", "--output", help="output file path")
     parser.add_argument("-f", "--format", help="output format (binary/hex)")
-    parser.add_argument("-i", "--include", nargs="*", help="include any number of supported RISC-V ISAs (""RV32I"" included by default)")
+    parser.add_argument("-i", "--include", nargs="*", help="specify any number of JSON files detailing extra/custom ISA(s)")
     args = parser.parse_args()
 
+    # Create a new RVAsm object per command
     rvasm = RVAsm()
-    with open(args.input, "r", encoding="utf-8") as f:
+
+    with open(args.input, "r", encoding="utf-8") as asm_file:
 
         # Placeholder variables to pass to rvasm object
         OUTPUT = None
@@ -38,7 +40,7 @@ def main():
                     rvasm.IncludeFromJSON(json_file)
         
         # Go!
-        rvasm.Assemble(f, output=OUTPUT, output_format=OUTPUT_FORMAT)
+        rvasm.Assemble(asm_file, output=OUTPUT, output_format=OUTPUT_FORMAT)
 
 class RVAsm():
 
@@ -50,14 +52,14 @@ class RVAsm():
         self._UpdateWorkingLibrary(self.default_includes + self.user_includes)  # Update and compile the working library based on the include list
 
         self.processor = Processor(self.library)                                # Create a Processor object with the shared library
-        self.bin = None                                                         # Variable to hold the assembled machine code
+        self.bin = None                                                         # Placeholder for the assembled machine code
 
     class RVAsmError(Exception):
         def __init__(self, message: str):
             super().__init__(message)
 
     # Method to assemble a '.asm' file
-    def Assemble(self, file: TextIO, output=None, output_format=None):
+    def Assemble(self, file: TextIO, output:str=None, output_format:str=None):
 
         # Internally set default arguments (easier for argparse)
         if (not output):

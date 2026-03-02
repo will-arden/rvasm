@@ -3,11 +3,10 @@ from rvasm.tokeniser import Tokeniser
 class Processor():
 
     def __init__(self, library):
-        self.library = library                  # Library accessible to all classes
+        self.library = library                  # Shared Library object
         self.instructions = []                  # Store tokenised instructions
         self.labels = []                        # Store labels with a program index
         self.index = 0                          # Program index (program counter / 4)
-        self.line_counter = 0                   # Count of the number of lines processed
         self.tokeniser = Tokeniser(library)     # Object responsible for tokenising instructions
 
     class ProcessorError(Exception):
@@ -20,7 +19,7 @@ class Processor():
         self.labels = []
 
     # Method to process the next line of the assembly file
-    def ProcessLine(self, line):
+    def ProcessLine(self, line: str):
 
         line = line.rstrip()                # Strip the newline character from the line
         line = line.split("#")[0]           # Ignore comments
