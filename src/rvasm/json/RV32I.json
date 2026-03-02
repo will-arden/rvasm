@@ -2,7 +2,7 @@
     "RV32I": [
         {
             "instr": "lui",
-            "format": "F1",
+            "format": "instr rd, imm",
             "byte_len": 32,
             "type": "U",
             "opcode": "0110111",
@@ -11,7 +11,7 @@
         },
         {
             "instr": "auipc",
-            "format": "F1",
+            "format": "instr rd, imm",
             "byte_len": 32,
             "type": "U",
             "opcode": "0010111",
@@ -20,7 +20,7 @@
         },
         {
             "instr": "jal",
-            "format": "F1",
+            "format": "instr rd, imm",
             "byte_len": 32,
             "type": "J",
             "opcode": "1101111",
@@ -29,7 +29,7 @@
         },
         {
             "instr": "beq",
-            "format": "F2",
+            "format": "instr rs1, rs2, imm",
             "byte_len": 32,
             "type": "B",
             "opcode": "1100011",
@@ -38,7 +38,7 @@
         },
         {
             "instr": "bne",
-            "format": "F2",
+            "format": "instr rs1, rs2, imm",
             "byte_len": 32,
             "type": "B",
             "opcode": "1100011",
@@ -47,7 +47,7 @@
         },
         {
             "instr": "blt",
-            "format": "F2",
+            "format": "instr rs1, rs2, imm",
             "byte_len": 32,
             "type": "B",
             "opcode": "1100011",
@@ -56,7 +56,7 @@
         },
         {
             "instr": "bge",
-            "format": "F2",
+            "format": "instr rs1, rs2, imm",
             "byte_len": 32,
             "type": "B",
             "opcode": "1100011",
@@ -65,7 +65,7 @@
         },
         {
             "instr": "bltu",
-            "format": "F2",
+            "format": "instr rs1, rs2, imm",
             "byte_len": 32,
             "type": "B",
             "opcode": "1100011",
@@ -74,7 +74,7 @@
         },
         {
             "instr": "bgeu",
-            "format": "F2",
+            "format": "instr rs1, rs2, imm",
             "byte_len": 32,
             "type": "B",
             "opcode": "1100011",
@@ -83,7 +83,7 @@
         },
         {
             "instr": "jalr",
-            "format": "F3",
+            "format": "instr rd, rs1, imm",
             "byte_len": 32,
             "type": "I",
             "opcode": "1100111",
@@ -92,7 +92,7 @@
         },
         {
             "instr": "lb",
-            "format": "F4",
+            "format": "instr rd, imm(rs1)",
             "byte_len": 32,
             "type": "I",
             "opcode": "0000011",
@@ -101,7 +101,7 @@
         },
         {
             "instr": "lh",
-            "format": "F4",
+            "format": "instr rd, imm(rs1)",
             "byte_len": 32,
             "type": "I",
             "opcode": "0000011",
@@ -110,7 +110,7 @@
         },
         {
             "instr": "lw",
-            "format": "F4",
+            "format": "instr rd, imm(rs1)",
             "byte_len": 32,
             "type": "I",
             "opcode": "0000011",
@@ -119,7 +119,7 @@
         },
         {
             "instr": "lbu",
-            "format": "F4",
+            "format": "instr rd, imm(rs1)",
             "byte_len": 32,
             "type": "I",
             "opcode": "0000011",
@@ -128,7 +128,7 @@
         },
         {
             "instr": "lhu",
-            "format": "F4",
+            "format": "instr rd, imm(rs1)",
             "byte_len": 32,
             "type": "I",
             "opcode": "0000011",
@@ -137,7 +137,7 @@
         },
         {
             "instr": "addi",
-            "format": "F3",
+            "format": "instr rd, rs1, imm",
             "byte_len": 32,
             "type": "I",
             "opcode": "0010011",
@@ -146,7 +146,7 @@
         },
         {
             "instr": "slti",
-            "format": "F3",
+            "format": "instr rd, rs1, imm",
             "byte_len": 32,
             "type": "I",
             "opcode": "0010011",
@@ -155,7 +155,7 @@
         },
         {
             "instr": "sltiu",
-            "format": "F3",
+            "format": "instr rd, rs1, imm",
             "byte_len": 32,
             "type": "I",
             "opcode": "0010011",
@@ -164,7 +164,7 @@
         },
         {
             "instr": "xori",
-            "format": "F3",
+            "format": "instr rd, rs1, imm",
             "byte_len": 32,
             "type": "I",
             "opcode": "0010011",
@@ -173,7 +173,7 @@
         },
         {
             "instr": "ori",
-            "format": "F3",
+            "format": "instr rd, rs1, imm",
             "byte_len": 32,
             "type": "I",
             "opcode": "0010011",
@@ -182,7 +182,7 @@
         },
         {
             "instr": "andi",
-            "format": "F3",
+            "format": "instr rd, rs1, imm",
             "byte_len": 32,
             "type": "I",
             "opcode": "0010011",
@@ -191,7 +191,7 @@
         },
         {
             "instr": "sb",
-            "format": "F5",
+            "format": "instr rs2, imm(rs1)",
             "byte_len": 32,
             "type": "S",
             "opcode": "0100011",
@@ -200,7 +200,7 @@
         },
         {
             "instr": "sh",
-            "format": "F5",
+            "format": "instr rs2, imm(rs1)",
             "byte_len": 32,
             "type": "S",
             "opcode": "0100011",
@@ -209,7 +209,7 @@
         },
         {
             "instr": "sw",
-            "format": "F5",
+            "format": "instr rs2, imm(rs1)",
             "byte_len": 32,
             "type": "S",
             "opcode": "0100011",
@@ -218,7 +218,7 @@
         },
         {
             "instr": "slli",
-            "format": "F3",
+            "format": "instr rd, rs1, imm",
             "byte_len": 32,
             "type": "I",
             "opcode": "0010011",
@@ -227,7 +227,7 @@
         },
         {
             "instr": "srli",
-            "format": "F3",
+            "format": "instr rd, rs1, imm",
             "byte_len": 32,
             "type": "I",
             "opcode": "0010011",
@@ -236,7 +236,7 @@
         },
         {
             "instr": "srai",
-            "format": "F3",
+            "format": "instr rd, rs1, imm",
             "byte_len": 32,
             "type": "I",
             "opcode": "0010011",
@@ -245,7 +245,7 @@
         },
         {
             "instr": "add",
-            "format": "F0",
+            "format": "instr rd, rs1, rs2",
             "byte_len": 32,
             "type": "R",
             "opcode": "0110011",
@@ -254,7 +254,7 @@
         },
         {
             "instr": "sub",
-            "format": "F0",
+            "format": "instr rd, rs1, rs2",
             "byte_len": 32,
             "type": "R",
             "opcode": "0110011",
@@ -263,7 +263,7 @@
         },
         {
             "instr": "sll",
-            "format": "F0",
+            "format": "instr rd, rs1, rs2",
             "byte_len": 32,
             "type": "R",
             "opcode": "0110011",
@@ -272,7 +272,7 @@
         },
         {
             "instr": "slt",
-            "format": "F0",
+            "format": "instr rd, rs1, rs2",
             "byte_len": 32,
             "type": "R",
             "opcode": "0110011",
@@ -281,7 +281,7 @@
         },
         {
             "instr": "sltu",
-            "format": "F0",
+            "format": "instr rd, rs1, rs2",
             "byte_len": 32,
             "type": "R",
             "opcode": "0110011",
@@ -290,7 +290,7 @@
         },
         {
             "instr": "xor",
-            "format": "F0",
+            "format": "instr rd, rs1, rs2",
             "byte_len": 32,
             "type": "R",
             "opcode": "0110011",
@@ -299,7 +299,7 @@
         },
         {
             "instr": "srl",
-            "format": "F0",
+            "format": "instr rd, rs1, rs2",
             "byte_len": 32,
             "type": "R",
             "opcode": "0110011",
@@ -308,7 +308,7 @@
         },
         {
             "instr": "sra",
-            "format": "F0",
+            "format": "instr rd, rs1, rs2",
             "byte_len": 32,
             "type": "R",
             "opcode": "0110011",
@@ -317,7 +317,7 @@
         },
         {
             "instr": "or",
-            "format": "F0",
+            "format": "instr rd, rs1, rs2",
             "byte_len": 32,
             "type": "R",
             "opcode": "0110011",
@@ -326,7 +326,7 @@
         },
         {
             "instr": "and",
-            "format": "F0",
+            "format": "instr rd, rs1, rs2",
             "byte_len": 32,
             "type": "R",
             "opcode": "0110011",
@@ -335,7 +335,7 @@
         },
         {
             "instr": "fence",
-            "format": "F6",
+            "format": "instr",
             "byte_len": 32,
             "type": "",
             "opcode": "0001111",
@@ -344,7 +344,7 @@
         },
         {
             "instr": "ebreak",
-            "format": "F6",
+            "format": "instr",
             "byte_len": 32,
             "type": "",
             "opcode": "1110011",

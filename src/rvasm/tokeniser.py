@@ -15,7 +15,6 @@ class Tokeniser():
     def Tokenise(self, line: str):
         tokenised_instruction = {}
         library_data = None
-        format_string = None
         instr = None
 
         # Split the instruction into parts
@@ -33,14 +32,11 @@ class Tokeniser():
             raise self.TokeniserError(f"Unknown instruction {instr} which cannot be found in the working library.")
 
         # Retrieve the format string from the library
-        for format, value in self.library.GetFormats().items():
-            if (library_data["format"] == format):
-                format_string = value
-        if (format_string == None):
+        if (library_data["format"] == None):
             raise self.TokeniserError(f"Couldn't find the instruction format: {library_data['format']}")
 
         # Tokenise the format string
-        fparts = re.split(r"[,()\s]+", format_string)           # Split for whitespace, commas and brackets
+        fparts = re.split(r"[,()\s]+", library_data["format"])           # Split for whitespace, commas and brackets
         fparts = [fp.strip() for fp in fparts if fp.strip()]    # Prune separators and useless parts
         
         # Match together each field with the corresponding value in the written instruction

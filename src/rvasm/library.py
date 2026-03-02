@@ -14,13 +14,9 @@ class Library():
 
     def __init__(self):
 
-        # List of expected instruction formats
-        with res.files("rvasm.json").joinpath("formats.json").open("r") as f:
-            self.formats = json.load(f)
-
         # Declare the core ISAs (within json/ directory)
         for file in res.files("rvasm.json").iterdir():                              # Iterate through every JSON file
-            if (file.name.endswith(".json") and file.name != "formats.json"):
+            if (file.name.endswith(".json")):
                 with file.open("r", encoding="utf-8-sig") as f:
                     json_data = json.load(f)
                     for isa_name, isa_data in json_data.items():                        # Add the ISA data to the dictionary
@@ -56,10 +52,6 @@ class Library():
                         self.working_lib.append(instr_to_add)                   # Append the instruction to the working library
             if (not isa_found):
                 raise self.LibraryError(f"Could not recognise ISA: {isa_to_include}")
-
-    # Method to return the instruction formats
-    def GetFormats(self):
-        return self.formats
     
     # Method to return the working library
     def GetWorkingLibrary(self):

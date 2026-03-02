@@ -1,9 +1,0 @@
-{
-    "F0": "instr rd, rs1, rs2",
-    "F1": "instr rd, imm",
-    "F2": "instr rs1, rs2, imm",
-    "F3": "instr rd, rs1, imm",
-    "F4": "instr rd, imm(rs1)",
-    "F5": "instr rs2, imm(rs1)",
-    "F6": "instr"
-}
