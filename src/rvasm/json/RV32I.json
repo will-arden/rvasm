@@ -5,8 +5,8 @@
             "format": "instr rd, imm",
             "byte_len": 32,
             "encoding": "imm[31:12] & rd[4:0] & opcode[6:0]",
-            "opcode[6:0]": "0110111",
-            "funct3[2:0]": null,
+            "opcode": "0110111",
+            "funct3": null,
             "funct7": null
         },
         {
@@ -14,8 +14,8 @@
             "format": "instr rd, imm",
             "byte_len": 32,
             "encoding": "imm[31:12] & rd[4:0] & opcode[6:0]",
-            "opcode[6:0]": "0010111",
-            "funct3[2:0]": null,
+            "opcode": "0010111",
+            "funct3": null,
             "funct7": null
         },
         {
@@ -23,8 +23,8 @@
             "format": "instr rd, imm",
             "byte_len": 32,
             "encoding": "imm[20] & imm[10:1] & imm[11] & imm[19:12] & rd[4:0] & opcode[6:0]",
-            "opcode[6:0]": "1101111",
-            "funct3[2:0]": null,
+            "opcode": "1101111",
+            "funct3": null,
             "funct7": null
         },
         {
@@ -32,8 +32,8 @@
             "format": "instr rs1, rs2 imm",
             "byte_len": 32,
             "encoding": "imm[12] & imm[10:5] & rs2[4:0] & rs1[4:0] & funct3[2:0] & imm[4:1] & imm[11] & opcode[6:0]",
-            "opcode[6:0]": "1100011",
-            "funct3[2:0]": "000",
+            "opcode": "1100011",
+            "funct3": "000",
             "funct7": null
         },
         {
@@ -41,8 +41,8 @@
             "format": "instr rs1, rs2, imm",
             "byte_len": 32,
             "encoding": "imm[12] & imm[10:5] & rs2[4:0] & rs1[4:0] & funct3[2:0] & imm[4:1] & imm[11] & opcode[6:0]",
-            "opcode[6:0]": "1100011",
-            "funct3[2:0]": "001",
+            "opcode": "1100011",
+            "funct3": "001",
             "funct7": null
         },
         {
@@ -50,8 +50,8 @@
             "format": "instr rs1, rs2, imm",
             "byte_len": 32,
             "encoding": "imm[12] & imm[10:5] & rs2[4:0] & rs1[4:0] & funct3[2:0] & imm[4:1] & imm[11] & opcode[6:0]",
-            "opcode[6:0]": "1100011",
-            "funct3[2:0]": "100",
+            "opcode": "1100011",
+            "funct3": "100",
             "funct7": null
         },
         {
@@ -59,8 +59,8 @@
             "format": "instr rs1, rs2, imm",
             "byte_len": 32,
             "encoding": "imm[12] & imm[10:5] & rs2[4:0] & rs1[4:0] & funct3[2:0] & imm[4:1] & imm[11] & opcode[6:0]",
-            "opcode[6:0]": "1100011",
-            "funct3[2:0]": "101",
+            "opcode": "1100011",
+            "funct3": "101",
             "funct7": null
         },
         {
@@ -68,8 +68,8 @@
             "format": "instr rs1, rs2, imm",
             "byte_len": 32,
             "encoding": "imm[12] & imm[10:5] & rs2[4:0] & rs1[4:0] & funct3[2:0] & imm[4:1] & imm[11] & opcode[6:0]",
-            "opcode[6:0]": "1100011",
-            "funct3[2:0]": "110",
+            "opcode": "1100011",
+            "funct3": "110",
             "funct7": null
         },
         {
@@ -77,8 +77,8 @@
             "format": "instr rs1, rs2, imm",
             "byte_len": 32,
             "encoding": "imm[12] & imm[10:5] & rs2[4:0] & rs1[4:0] & funct3[2:0] & imm[4:1] & imm[11] & opcode[6:0]",
-            "opcode[6:0]": "1100011",
-            "funct3[2:0]": "111",
+            "opcode": "1100011",
+            "funct3": "111",
             "funct7": null
         },
         {
@@ -86,8 +86,8 @@
             "format": "instr rd, rs1, imm",
             "byte_len": 32,
             "encoding": "imm[11:0] & rs1[4:0] & funct3[2:0] & rd[4:0] & opcode[6:0]",
-            "opcode[6:0]": "1100111",
-            "funct3[2:0]": "000",
+            "opcode": "1100111",
+            "funct3": "000",
             "funct7": null
         },
         {
@@ -95,8 +95,8 @@
             "format": "instr rd, imm(rs1)",
             "byte_len": 32,
             "encoding": "imm[11:0] & rs1[4:0] & funct3[2:0] & rd[4:0] & opcode[6:0]",
-            "opcode[6:0]": "0000011",
-            "funct3[2:0]": "000",
+            "opcode": "0000011",
+            "funct3": "000",
             "funct7": null
         },
         {
@@ -104,8 +104,8 @@
             "format": "instr rd, imm(rs1)",
             "byte_len": 32,
             "encoding": "imm[11:0] & rs1[4:0] & funct3[2:0] & rd[4:0] & opcode[6:0]",
-            "opcode[6:0]": "0000011",
-            "funct3[2:0]": "001",
+            "opcode": "0000011",
+            "funct3": "001",
             "funct7": null
         },
         {
@@ -113,8 +113,8 @@
             "format": "instr rd, imm(rs1)",
             "byte_len": 32,
             "encoding": "imm[11:0] & rs1[4:0] & funct3[2:0] & rd[4:0] & opcode[6:0]",
-            "opcode[6:0]": "0000011",
-            "funct3[2:0]": "010",
+            "opcode": "0000011",
+            "funct3": "010",
             "funct7": null
         },
         {
@@ -122,8 +122,8 @@
             "format": "instr rd, imm(rs1)",
             "byte_len": 32,
             "encoding": "imm[11:0] & rs1[4:0] & funct3[2:0] & rd[4:0] & opcode[6:0]",
-            "opcode[6:0]": "0000011",
-            "funct3[2:0]": "100",
+            "opcode": "0000011",
+            "funct3": "100",
             "funct7": null
         },
         {
@@ -131,8 +131,8 @@
             "format": "instr rd, imm(rs1)",
             "byte_len": 32,
             "encoding": "imm[11:0] & rs1[4:0] & funct3[2:0] & rd[4:0] & opcode[6:0]",
-            "opcode[6:0]": "0000011",
-            "funct3[2:0]": "101",
+            "opcode": "0000011",
+            "funct3": "101",
             "funct7": null
         },
         {
@@ -140,8 +140,8 @@
             "format": "instr rd, rs1, imm",
             "byte_len": 32,
             "encoding": "imm[11:0] & rs1[4:0] & funct3[2:0] & rd[4:0] & opcode[6:0]",
-            "opcode[6:0]": "0010011",
-            "funct3[2:0]": "000",
+            "opcode": "0010011",
+            "funct3": "000",
             "funct7": null
         },
         {
@@ -149,8 +149,8 @@
             "format": "instr rd, rs1, imm",
             "byte_len": 32,
             "encoding": "imm[11:0] & rs1[4:0] & funct3[2:0] & rd[4:0] & opcode[6:0]",
-            "opcode[6:0]": "0010011",
-            "funct3[2:0]": "010",
+            "opcode]": "0010011",
+            "funct3": "010",
             "funct7": null
         },
         {
@@ -158,8 +158,8 @@
             "format": "instr rd, rs1, imm",
             "byte_len": 32,
             "encoding": "imm[11:0] & rs1[4:0] & funct3[2:0] & rd[4:0] & opcode[6:0]",
-            "opcode[6:0]": "0010011",
-            "funct3[2:0]": "011",
+            "opcode": "0010011",
+            "funct3": "011",
             "funct7": null
         },
         {
@@ -167,8 +167,8 @@
             "format": "instr rd, rs1, imm",
             "byte_len": 32,
             "encoding": "imm[11:0] & rs1[4:0] & funct3[2:0] & rd[4:0] & opcode[6:0]",
-            "opcode[6:0]": "0010011",
-            "funct3[2:0]": "100",
+            "opcode": "0010011",
+            "funct3": "100",
             "funct7": null
         },
         {
@@ -176,8 +176,8 @@
             "format": "instr rd, rs1, imm",
             "byte_len": 32,
             "encoding": "imm[11:0] & rs1[4:0] & funct3[2:0] & rd[4:0] & opcode[6:0]",
-            "opcode[6:0]": "0010011",
-            "funct3[2:0]": "110",
+            "opcode": "0010011",
+            "funct3": "110",
             "funct7": null
         },
         {
@@ -185,8 +185,8 @@
             "format": "instr rd, rs1, imm",
             "byte_len": 32,
             "encoding": "imm[11:0] & rs1[4:0] & funct3[2:0] & rd[4:0] & opcode[6:0]",
-            "opcode[6:0]": "0010011",
-            "funct3[2:0]": "111",
+            "opcode": "0010011",
+            "funct3": "111",
             "funct7": null
         },
         {
@@ -194,8 +194,8 @@
             "format": "instr rs2, imm(rs1)",
             "byte_len": 32,
             "encoding": "imm[11:5] & rs2[4:0] & rs1[4:0] & funct3[2:0] & imm[4:0] & opcode[6:0]",
-            "opcode[6:0]": "0100011",
-            "funct3[2:0]": "000",
+            "opcode": "0100011",
+            "funct3": "000",
             "funct7": null
         },
         {
@@ -203,8 +203,8 @@
             "format": "instr rs2, imm(rs1)",
             "byte_len": 32,
             "encoding": "imm[11:5] & rs2[4:0] & rs1[4:0] & funct3[2:0] & imm[4:0] & opcode[6:0]",
-            "opcode[6:0]": "0100011",
-            "funct3[2:0]": "001",
+            "opcode": "0100011",
+            "funct3": "001",
             "funct7": null
         },
         {
@@ -212,8 +212,8 @@
             "format": "instr rs2, imm(rs1)",
             "byte_len": 32,
             "encoding": "imm[11:5] & rs2[4:0] & rs1[4:0] & funct3[2:0] & imm[4:0] & opcode[6:0]",
-            "opcode[6:0]": "0100011",
-            "funct3[2:0]": "010",
+            "opcode": "0100011",
+            "funct3": "010",
             "funct7": null
         },
         {
@@ -221,8 +221,8 @@
             "format": "instr rd, rs1, imm",
             "byte_len": 32,
             "encoding": "imm[11:0] & rs1[4:0] & funct3[2:0] & rd[4:0] & opcode[6:0]",
-            "opcode[6:0]": "0010011",
-            "funct3[2:0]": "001",
+            "opcode": "0010011",
+            "funct3": "001",
             "funct7": "0000000"
         },
         {
@@ -230,8 +230,8 @@
             "format": "instr rd, rs1, imm",
             "byte_len": 32,
             "encoding": "imm[11:0] & rs1[4:0] & funct3[2:0] & rd[4:0] & opcode[6:0]",
-            "opcode[6:0]": "0010011",
-            "funct3[2:0]": "101",
+            "opcode": "0010011",
+            "funct3": "101",
             "funct7": "0000000"
         },
         {
@@ -239,8 +239,8 @@
             "format": "instr rd, rs1, imm",
             "byte_len": 32,
             "encoding": "imm[11:0] & rs1[4:0] & funct3[2:0] & rd[4:0] & opcode[6:0]",
-            "opcode[6:0]": "0010011",
-            "funct3[2:0]": "101",
+            "opcode": "0010011",
+            "funct3": "101",
             "funct7": "0100000"
         },
         {
@@ -248,8 +248,8 @@
             "format": "instr rd, rs1, rs2",
             "byte_len": 32,
             "encoding": "funct7 & rs2[4:0] & rs1[4:0] & funct3[2:0] & rd[4:0] & opcode[6:0]",
-            "opcode[6:0]": "0110011",
-            "funct3[2:0]": "000",
+            "opcode": "0110011",
+            "funct3": "000",
             "funct7": "0000000"
         },
         {
@@ -257,8 +257,8 @@
             "format": "instr rd, rs1, rs2",
             "byte_len": 32,
             "encoding": "funct7 & rs2[4:0] & rs1[4:0] & funct3[2:0] & rd[4:0] & opcode[6:0]",
-            "opcode[6:0]": "0110011",
-            "funct3[2:0]": "000",
+            "opcode": "0110011",
+            "funct3": "000",
             "funct7": "0100000"
         },
         {
@@ -266,8 +266,8 @@
             "format": "instr rd, rs1, rs2",
             "byte_len": 32,
             "encoding": "funct7 & rs2[4:0] & rs1[4:0] & funct3[2:0] & rd[4:0] & opcode[6:0]",
-            "opcode[6:0]": "0110011",
-            "funct3[2:0]": "001",
+            "opcode": "0110011",
+            "funct3": "001",
             "funct7": "0000000"
         },
         {
@@ -275,8 +275,8 @@
             "format": "instr rd, rs1, rs2",
             "byte_len": 32,
             "encoding": "funct7 & rs2[4:0] & rs1[4:0] & funct3[2:0] & rd[4:0] & opcode[6:0]",
-            "opcode[6:0]": "0110011",
-            "funct3[2:0]": "010",
+            "opcode": "0110011",
+            "funct3": "010",
             "funct7": "0000000"
         },
         {
@@ -284,8 +284,8 @@
             "format": "instr rd, rs1, rs2",
             "byte_len": 32,
             "encoding": "funct7 & rs2[4:0] & rs1[4:0] & funct3[2:0] & rd[4:0] & opcode[6:0]",
-            "opcode[6:0]": "0110011",
-            "funct3[2:0]": "011",
+            "opcode": "0110011",
+            "funct3": "011",
             "funct7": "0000000"
         },
         {
@@ -293,8 +293,8 @@
             "format": "instr rd, rs1, rs2",
             "byte_len": 32,
             "encoding": "funct7 & rs2[4:0] & rs1[4:0] & funct3[2:0] & rd[4:0] & opcode[6:0]",
-            "opcode[6:0]": "0110011",
-            "funct3[2:0]": "100",
+            "opcode": "0110011",
+            "funct3": "100",
             "funct7": "0000000"
         },
         {
@@ -302,8 +302,8 @@
             "format": "instr rd, rs1, rs2",
             "byte_len": 32,
             "encoding": "funct7 & rs2[4:0] & rs1[4:0] & funct3[2:0] & rd[4:0] & opcode[6:0]",
-            "opcode[6:0]": "0110011",
-            "funct3[2:0]": "101",
+            "opcode": "0110011",
+            "funct3": "101",
             "funct7": "0000000"
         },
         {
@@ -311,8 +311,8 @@
             "format": "instr rd, rs1, rs2",
             "byte_len": 32,
             "encoding": "funct7 & rs2[4:0] & rs1[4:0] & funct3[2:0] & rd[4:0] & opcode[6:0]",
-            "opcode[6:0]": "0110011",
-            "funct3[2:0]": "000",
+            "opcode": "0110011",
+            "funct3": "000",
             "funct7": "0100000"
         },
         {
@@ -320,8 +320,8 @@
             "format": "instr rd, rs1, rs2",
             "byte_len": 32,
             "encoding": "funct7 & rs2[4:0] & rs1[4:0] & funct3[2:0] & rd[4:0] & opcode[6:0]",
-            "opcode[6:0]": "0110011",
-            "funct3[2:0]": "110",
+            "opcode": "0110011",
+            "funct3": "110",
             "funct7": "0000000"
         },
         {
@@ -329,8 +329,8 @@
             "format": "instr rd, rs1, rs2",
             "byte_len": 32,
             "encoding": "funct7 & rs2[4:0] & rs1[4:0] & funct3[2:0] & rd[4:0] & opcode[6:0]",
-            "opcode[6:0]": "0110011",
-            "funct3[2:0]": "111",
+            "opcode": "0110011",
+            "funct3": "111",
             "funct7": "0000000"
         },
         {
@@ -338,8 +338,8 @@
             "format": "instr",
             "byte_len": 32,
             "encoding": "fm[3:0] & pi[0] & po[0] & pr[0] & pw[0] & si[0] & so[0] & sr[0] & sw[0] & rs1[4:0] & funct3[2:0] & rd[4:0] & opcode[6:0]",
-            "opcode[6:0]": "0001111",
-            "funct3[2:0]": "000",
+            "opcode": "0001111",
+            "funct3": "000",
             "funct7": null
         },
         {
@@ -347,8 +347,8 @@
             "format": "instr",
             "byte_len": 32,
             "encoding": "func12[11:0] & rs1[4:0] & funct3[2:0] & rd[4:0] & opcode[6:0]",
-            "opcode[6:0]": "1110011",
-            "funct3[2:0]": "000",
+            "opcode": "1110011",
+            "funct3": "000",
             "funct7": null
         }
     ]
