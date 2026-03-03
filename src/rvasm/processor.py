@@ -69,7 +69,7 @@ class Processor():
             if ((key == "imm") and (not instr[key].isdigit())):
                 for lbl in self.labels:
                     if (lbl["name"] == instr[key]):
-                        instr[key] = lbl["index"] * int(lib_data["byte_len"] / 8)
+                        instr[key] = lbl["index"] * int(lib_data["width"] / 8)
 
             # Convert immediate values to integers (if they are not already)
             if (key == "imm"):
@@ -92,7 +92,7 @@ class Processor():
             funct7 = lib_data["funct7"]
             
             # Pattern is dependent on the instruction type
-            match lib_data["type"]:
+            match lib_data["encoding"]:
 
                 case "R":
                     line = funct7 + row["rs2"] + row["rs1"] + funct3 + row["rd"] + opcode
@@ -120,7 +120,7 @@ class Processor():
                     raise self.ProcessorError(f"Could not associate instruction type {lib_data[3]} with a known value!")
 
             # Check that the length of the instruction matches what is expected
-            if (len(line) != lib_data["byte_len"]):
+            if (len(line) != lib_data["width"]):
                 raise self.ProcessorError("Encountered an unexpected instruction length while generating machine code.")
             
             # Append the line to the list of machine code lines

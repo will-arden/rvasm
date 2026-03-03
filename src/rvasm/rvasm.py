@@ -2,6 +2,7 @@ import argparse
 import json
 from typing import TextIO
 
+from .inspector import Inspector
 from .library import Library
 from .processor import Processor
 
@@ -45,6 +46,14 @@ def main():
 class RVAsm():
 
     def __init__(self):
+
+        # Verify the RVAsm setup using the Inspector class
+        try:
+            self.inspector = Inspector()
+        except Exception as e:
+            print(f"Failed to created the RVAsm object; setup could not be verified.")
+            print(f"{e}")
+            exit()
         self.library = Library()                                                # Create a new Library object
 
         self.default_includes = ["RV32I"]                                       # Specify ISAs to include by default
