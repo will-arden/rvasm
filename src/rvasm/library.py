@@ -15,7 +15,7 @@ class Library():
     def __init__(self):
 
         # Declare the core ISAs (within json/ directory)
-        for file in res.files("rvasm.json").iterdir():                              # Iterate through every JSON file
+        for file in res.files("rvasm.core_ext").iterdir():                              # Iterate through every JSON file
             if (file.name.endswith(".json")):
                 with file.open("r", encoding="utf-8-sig") as f:
                     json_data = json.load(f)
