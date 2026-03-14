@@ -41,43 +41,48 @@ class Processor():
             return
 
         # Tokenise instructions
-        instr = self.tokeniser.Tokenise(line)
+        tokens = self.tokeniser.Tokenise(line)
 
         # Look-up the library data for this instruction
-        lib_data = self.library.WorkingLibraryLookUp(instr["instr"])
-        if (not lib_data):
-            raise self.ProcessorError(f"Could not find instruction {instr['instr']} in the working library.")
+        lib_data = self.library.WorkingLibraryLookUp(tokens["instr"])
+        if (lib_data == None):
+            raise self.ProcessorError(f"Could not find instruction {tokens['instr']} in the working library.")
 
-        # Iterate through the parts of the tokenised instruction, ensuring they are all in order
-        for key, value in instr.items():
+        # Iterate through the tokens
+        for key, value in tokens.items():
 
-            # No need to check the instruction keyword
+            # No need to check the instruction keyword; this must be correct
             if (key == "instr"):
                 continue
 
             # Ensure any x's are removed from register fields, then convert to an integer between 0-31
             if (key in ("rd", "rs1", "rs2")):
-                instr[key] = instr[key].replace("x", "")
-                instr[key] = int(instr[key])
-                if (instr[key] < 0 or instr[key] > 31):
-                    raise self.ProcessorError(f"Register {str(instr[key])} outside of range 0-31.")
+                tokens[key] = tokens[key].replace("x", "")
+                tokens[key] = int(tokens[key])
+                if (tokens[key] < 0 or tokens[key] > 31):
+                    raise self.ProcessorError(f"Register {str(tokens[key])} outside of range 0-31.")
                 
                 # Convert the now integer register fields into binary strings of the correct length
-                instr[key] = format(instr[key], "05b")
+                tokens[key] = format(tokens[key], "05b")
+
+            # Identify keys which have plain-text values (these might be labels)
+            if (value.isalpha()):
                 
-            # Resolve labels
-            if ((key == "imm") and (not instr[key].isdigit())):
+                # TODO: some specific strings might be mappable to some other function
+
+                # Resolve unknown plain-text values to labels
                 for lbl in self.labels:
-                    if (lbl["name"] == instr[key]):
-                        instr[key] = lbl["index"] * int(lib_data["width"] / 8)
+                    if (lbl["name"] == tokens[key]):
+                        tokens[key] = lbl["index"] * int(lib_data["width"] / 8)
 
             # Convert immediate values to integers (if they are not already)
             if (key == "imm"):
-                instr[key] = int(instr[key])
+                tokens[key] = int(tokens[key])
 
         # Finally, increment the index and append the instruction to the list of parsed instructions
         self.index += 1
-        self.instructions.append(instr)
+        print(f"Appending instruction: {tokens}")
+        self.instructions.append(tokens)
 
     # Method to generate the final machine code
     def GenerateBinaries(self):

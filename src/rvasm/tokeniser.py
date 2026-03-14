@@ -29,10 +29,6 @@ class Tokeniser():
         if (library_data == None):
             raise self.TokeniserError(f"Unknown instruction {instr} which cannot be found in the working library.")
 
-        # Retrieve the format string from the library
-        if (library_data["format"] == None):
-            raise self.TokeniserError(f"Couldn't find the instruction format: {library_data['format']}")
-
         # Tokenise the format string
         fparts = re.split(r"[,()\s]+", library_data["format"])      # Split for whitespace, commas and brackets
         fparts = [fp.strip() for fp in fparts if fp.strip()]        # Prune separators and useless parts
