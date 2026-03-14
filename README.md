@@ -11,7 +11,7 @@ You can install **rvasm** using `pip`, as follows:
 The command-line tool can be used to assemble an RV32I text file, as demonstrated below:
 > `rvasm my_file.asm`
 
-This will produce an output file `out.dat`, containing your assembled RV32I in hexadecimal. For help on other command-line options, use:
+This will produce an output file `out.mem`, containing your assembled RV32I in hexadecimal. For help on other command-line options, use:
 > `rvasm --help`
 
 Here is an example on how you can use **rvasm** in a Python project:
@@ -32,8 +32,8 @@ Firstly, create a **JSON file** detailing your custom instructions ([use this re
 >         {
 >             "instr": "addi",
 >             "format": "instr rd, rs1, imm",
->             "byte_len": 32,
->             "type": "I",
+>             "width": 32,
+>             "encoding": "imm[11:0] & rs1[4:0] & funct3[2:0] & rd[4:0] & opcode[6:0]",
 >             "opcode": "0010011",
 >             "funct3": "000",
 >             "funct7": null
@@ -55,7 +55,7 @@ The following example shows how you can use **rvasm** to assemble custom RISC-V 
 >     asm.Assemble(f)
 > ```
 
-For now, it is not possible to add custom instruction *types* - this project is a work-in-progress, so please keep checking in!
+This project is a work-in-progress, so please keep checking in! Feel free to create issues and suggest improvements.
 
 ## License
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
