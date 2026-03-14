@@ -61,9 +61,6 @@ class Processor():
                 tokens[key] = int(tokens[key])
                 if (tokens[key] < 0 or tokens[key] > 31):
                     raise self.ProcessorError(f"Register {str(tokens[key])} outside of range 0-31.")
-                
-                # Convert the now integer register fields into binary strings of the correct length
-                tokens[key] = format(tokens[key], "05b")
 
             # Identify keys which have plain-text values (these might be labels)
             if (value.isalpha()):
@@ -81,55 +78,84 @@ class Processor():
 
         # Finally, increment the index and append the instruction to the list of parsed instructions
         self.index += 1
-        print(f"Appending instruction: {tokens}")
         self.instructions.append(tokens)
 
     # Method to generate the final machine code
     def GenerateBinaries(self):
         machine_code = []
 
-        for row in self.instructions:
-            lib_data = self.library.WorkingLibraryLookUp(row["instr"])
+        # Iterate through each instruction
+        for line in self.instructions:
+            lib_data = self.library.WorkingLibraryLookUp(line["instr"])     # Fetch the relevant library data
+            binary = ""                                                     # Placeholder for binarised instruction
 
-            line = None
-            opcode = lib_data["opcode"]
-            funct3 = lib_data["funct3"]
-            funct7 = lib_data["funct7"]
+            # Iterate through each field of the encoding
+            fields = [p.strip() for p in lib_data["encoding"].split("&")]
+            for field in fields:
+
+                # Parse fields which use bit-slicing
+                if ("[" in field and "]" in field and ":" in field):
+                    fname, remainder = field.split("[", 1)                  # Get the name of the field
+                    fupper, remainder = remainder.split(":", 1)             # Get the upper bound
+                    flower = remainder.split("]")[0]                        # Get the lower bound
+                    (fupper, flower) = (int(fupper), int(flower))           # Convert bounds to integers
+                    
+                    # Try to retrieve the information from the instruction
+                    if (line.get(fname.strip()) is not None):
+                        fdata = line.get(fname.strip())
+
+                    # Failing that, try to retrieve the information from the library data
+                    elif (lib_data.get(fname.strip()) is not None):
+                        fdata = lib_data.get(fname.strip())
+
+                    # If the information can't be found, raise an error
+                    else:
+                        raise self.ProcessorError(f"Couldn't find information about '{fname.strip()}' in the instruction or in the corresponding library data.")
+
+                    # Add the bits to the binary string of the instruction
+                    fvalue = format(fdata, "064b") if isinstance(fdata, int) else fdata
+                    binary += fvalue[-1 - fupper : len(fvalue) - flower]
+
+                # Parse fields which index single bits
+                elif ("[" in field and "]" in field and not ":" in field):
+                    fname, remainder = field.split("[", 1)                  # Get the name of the field
+                    findex = int(remainder.split("]", 1)[0])                # Get the index of the bit of interest
+
+                    # Try to retrieve the information from the instruction
+                    if (line.get(fname.strip()) is not None):
+                        fdata = line.get(fname.strip())
+                    
+                    # Failing that, try to retrieve the information from the library data
+                    elif (lib_data.get(fname.strip()) is not None):
+                        fdata = lib_data.get(fname.strip())
+                    
+                    # If the information can't be found, raise an error
+                    else:
+                        raise self.ProcessorError(f"Couldn't find information about '{fname.strip()}' in the instruction or in the corresponding library data.")
+                
+                    # Add the bits to the binary string of the instruction
+                    fvalue = format(fdata, "064b") if isinstance(fdata, int) else fdata
+                    binary += fvalue[-1 - findex]
+
+                # Where no bit-indexing or bit-slicing is required
+                elif (not "[" in field and not "]" in field and not ":" in field):
+                    if (line.get(field.strip()) is not None):
+                        binary += line.get(field.strip())
+                    elif (lib_data.get(field.strip()) is not None):
+                        binary += lib_data.get(field.strip())
+                    else:
+                        raise self.ProcessorError(f"Couldn't find information about '{field.strip()}' in the instruction or in the corresponding library data.")
+                
+                # Encoding could not be interpreted
+                else:
+                    raise self.ProcessorError(f"Invalid encoding syntax in JSON data: {field}")
+
+            # Check that the length of the generated binary is valid
+            if (len(binary) != lib_data.get("width")):
+                raise self.ProcessorError(f"Expected the width of the '{lib_data['instr']}' instruction to be {lib_data['width']}; got {len(binary)}.")
             
-            # Pattern is dependent on the instruction type
-            match lib_data["encoding"]:
-
-                case "R":
-                    line = funct7 + row["rs2"] + row["rs1"] + funct3 + row["rd"] + opcode
-
-                case "I":
-                    line = format(row["imm"], "012b") + row["rs1"] + funct3 + row["rd"] + opcode
-
-                case "S":
-                    immediate = format(row["imm"], "012b")
-                    line = immediate[0:7] + row["rs2"] + row["rs1"] + funct3 + immediate[7:] + opcode
-
-                case "B":
-                    immediate = format(row["imm"], "013b")
-                    line = immediate[0] + immediate[2:8] + row["rs2"] + row["rs1"] + funct3 + immediate[8:12] + immediate[1] + opcode
-
-                case "U":
-                    immediate = format(row["imm"], "032b")
-                    line = immediate[:19] + row["rd"] + opcode
-
-                case "J":
-                    immediate = format(row["imm"], "032b")
-                    line = immediate[:20] + row["rd"] + opcode
-
-                case _:
-                    raise self.ProcessorError(f"Could not associate instruction type {lib_data[3]} with a known value!")
-
-            # Check that the length of the instruction matches what is expected
-            if (len(line) != lib_data["width"]):
-                raise self.ProcessorError("Encountered an unexpected instruction length while generating machine code.")
-            
-            # Append the line to the list of machine code lines
-            machine_code.append(line)
+            # Append the binary instruction to the list of machine code instructions
+            machine_code.append(binary)
         
         return machine_code
     
