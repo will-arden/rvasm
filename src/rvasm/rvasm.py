@@ -2,6 +2,7 @@ import argparse
 import json
 from typing import TextIO
 
+from .inspector import Inspector
 from .library import Library
 from .processor import Processor
 
@@ -45,6 +46,14 @@ def main():
 class RVAsm():
 
     def __init__(self):
+
+        # Verify the RVAsm setup using the Inspector class
+        try:
+            self.inspector = Inspector()
+        except Exception as e:
+            print(f"Failed to created the RVAsm object; setup could not be verified.")
+            print(f"{e}")
+            exit()
         self.library = Library()                                                # Create a new Library object
 
         self.default_includes = ["RV32I"]                                       # Specify ISAs to include by default
@@ -63,7 +72,7 @@ class RVAsm():
 
         # Internally set default arguments (easier for argparse)
         if (not output):
-            output = "out.dat"
+            output = "out.mem"
         if (not output_format):
             output_format = "hex"
 
@@ -113,7 +122,7 @@ class RVAsm():
         self.library.UpdateWorkingLibrary(total_include_list)
 
     # Method to write the to an output file
-    def _WriteOutput(self, filename="out.dat", output_format="hex"):
+    def _WriteOutput(self, filename="out.mem", output_format="hex"):
         write_content = self.bin
 
         with open(filename, "w") as f:
