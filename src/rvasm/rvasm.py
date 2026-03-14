@@ -72,7 +72,7 @@ class RVAsm():
 
         # Internally set default arguments (easier for argparse)
         if (not output):
-            output = "out.dat"
+            output = "out.mem"
         if (not output_format):
             output_format = "hex"
 
@@ -122,7 +122,7 @@ class RVAsm():
         self.library.UpdateWorkingLibrary(total_include_list)
 
     # Method to write the to an output file
-    def _WriteOutput(self, filename="out.dat", output_format="hex"):
+    def _WriteOutput(self, filename="out.mem", output_format="hex"):
         write_content = self.bin
 
         with open(filename, "w") as f:
